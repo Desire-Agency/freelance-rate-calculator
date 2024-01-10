@@ -1,0 +1,116 @@
+.calculator input::-webkit-outer-spin-button,
+.calculator input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.calculator input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.calculator input {
+  height: 40px;
+  padding: 0 60px 0 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.calculator select {
+  height: 40px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+.calculator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: calc(100% - 30px);
+  max-width: 700px;
+  height: 100%;
+  margin: 100px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  background: rgb(247, 247, 247);
+}
+
+.calculator h2 {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: rgb(13, 46, 67);
+  color: rgb(243, 195, 75);
+}
+
+.calculator .content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+  gap: 40px;
+}
+
+.calculator .wrap_input {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  justify-content: flex-end;
+}
+
+.calculator .wrap_input .val {
+  position: absolute;
+  bottom: 11px;
+  right: 10px;
+  pointer-events: none;
+}
+
+.calculator .wrap_select {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.calculator .row_wrap {
+  width: 100%;
+  display: grid;
+  gap: 18px;
+}
+
+.calculator .row_wrap.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.calculator .row_wrap.grid-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.calculator .total_block {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
+}
+.calculator .total_block_item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.calculator .total_block_item span {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 768px) {
+  .calculator .content {
+    padding: 20px 10px;
+  }
+
+  .calculator .row_wrap.grid-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
