@@ -1,7 +1,17 @@
-import { useState, useEffect } from 'react'
-import './calcItem.css'
+import { useState, useEffect, useCallback } from "react"
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from '@mui/material/FormHelperText';
 
-const loanLengthOptions = ["12", "24", "36", "48", "60", "72", "84", "96"];
+import "./calcItem.css"
+
+const loanLengthOptions = ["12 months", "24 months", "36 months", "48 months", "60 months", "72 months", "84 months", "96 months"];
 
 const dataByState = {
   "Alabama": {
@@ -419,15 +429,14 @@ const dataByState = {
 const DEF_ANNUAL_INCOME = "";
 const DEF_NEW_OR_USED = "New";
 const DEF_TYPE_OF_CAR = "Gas";
-const DEF_LOAN_LENGTH = "48";
+const DEF_LOAN_LENGTH = "48 months";
 const DEF_CAR_MPG = 24.2;
 const DEF_CAR_MPKW = 3;
-const DEF_MONTHLY_MAINTENANCE_COST = 66;
 const DEF_STATE = Object.keys(dataByState)[0];
 
 
 export default function CalcItem() {
-  const [selectedStateName, setSelectedStateName] = useState(DEF_STATE)
+  const [selectedStateName, setSelectedStateName] = useState()
   const [selectedState, setSelectedState] = useState(dataByState[DEF_STATE])
   const [annualIncome, setAnnualIncome] = useState(DEF_ANNUAL_INCOME)
 
@@ -442,150 +451,179 @@ export default function CalcItem() {
 
   const [totalData, setTotalData] = useState({})
 
-
-  const prettify = (str) => str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1 ");
+  const prettify = (str) => str === "NaN" ? "0" : str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1 ");
 
   useEffect(() => {
-    const monthlyDrivingDistanceValue = selectedState.averageAnnualMileage / 12;
-    const loanInterestValue = selectedState.newOrUsed[newOrUsed.toLocaleLowerCase()];
-    const downPaymentValue = annualIncome * 0.072
-    const priceAffordValue = annualIncome * 0.36
-    const monthlyLoanPaymentValue = (loanInterestValue / 100 / 12 * (priceAffordValue - downPaymentValue) / (1 - Math.pow((1 + (loanInterestValue / 100 / 12)), -loanLength)))
-    const totalLoanAmountValue = monthlyLoanPaymentValue * loanLength
-    const totalInterestPaidValue = totalLoanAmountValue - (priceAffordValue - downPaymentValue)
-    const estimatedMonthlyPaymentValue = monthlyLoanPaymentValue +
-      (selectedState.carInsurance.average / 12) +
-      (typeOfCar === "Gas" ? selectedState.priceGas.regular * monthlyDrivingDistanceValue / DEF_CAR_MPG
-        : selectedState.costPerKWH * monthlyDrivingDistanceValue / DEF_CAR_MPKW / 100)
-      + DEF_MONTHLY_MAINTENANCE_COST
+    if (!!selectedStateName) {
+      const downPaymentValue = annualIncome * 0.072
+      const priceAffordValue = annualIncome * 0.36
+      const monthlyLoanPaymentValue = (loanInterest / 100 / 12 * (priceAffordValue - downPaymentValue) / (1 - Math.pow((1 + (loanInterest / 100 / 12)), -Number(loanLength.replace(" months", "")))))
+      const totalLoanAmountValue = monthlyLoanPaymentValue * Number(loanLength.replace(" months", ""))
+      const totalInterestPaidValue = totalLoanAmountValue - (priceAffordValue - downPaymentValue);
+      const monthlyFuelCostValue = typeOfCar === "Gas" ? selectedState.priceGas.regular * monthlyDrivingDistance / DEF_CAR_MPG :
+        selectedState.costPerKWH * monthlyDrivingDistance / DEF_CAR_MPKW / 100;
+      const estimatedMonthlyPaymentValue = monthlyLoanPaymentValue + (selectedState.carInsurance.average / 12) + monthlyFuelCostValue + (0.303 * monthlyDrivingDistance)
 
+      setDownPayment(downPaymentValue.toFixed(3).replace(/\.0+$/, ""))
+      setPriceAfford(prettify(priceAffordValue.toFixed(0)).replace(/\.0+$/, ""))
+      setLoanInterest(loanInterest)
 
-    setDownPayment(downPaymentValue.toFixed(3).replace(/\.0+$/, ''))
-    setPriceAfford(prettify(priceAffordValue.toFixed(0)).replace(/\.0+$/, ''))
-    setMonthlyDrivingDistance((monthlyDrivingDistanceValue).toFixed(0))
-    setLoanInterest(loanInterestValue)
+      setTotalData({
+        recommendedBudgetL: prettify((annualIncome / 12 * 0.1).toFixed(0)).replace(/\.0+$/, ""),
+        recommendedBudgetH: prettify((annualIncome / 12 * 0.15).toFixed(0)).replace(/\.0+$/, ""),
+        monthlyInsuranceCost: prettify((selectedState.carInsurance.average / 12).toFixed(0)).replace(/\.0+$/, ""),
+        monthlyFuelCost: prettify((monthlyFuelCostValue).toFixed(0)).replace(/\.0+$/, ""),
+        monthlyLoanPayment: prettify((monthlyLoanPaymentValue).toFixed(0)).replace(/\.0+$/, ""),
+        totalLoanAmount: prettify(totalLoanAmountValue.toFixed(0)).replace(/\.0+$/, ""),
+        totalInterestPaid: prettify(totalInterestPaidValue.toFixed(0)).replace(/\.0+$/, ""),
+        estimatedMonthlyPayment: prettify(estimatedMonthlyPaymentValue.toFixed(0)).replace(/\.0+$/, ""),
+        monthlyMaintenanceCost: prettify((0.303 * monthlyDrivingDistance).toFixed(0)).replace(/\.0+$/, ""),
+      })
+    }
 
-    setTotalData({
-      recommendedBudgetL: prettify((annualIncome / 12 * 0.1).toFixed(0)).replace(/\.0+$/, ''),
-      recommendedBudgetH: prettify((annualIncome / 12 * 0.15).toFixed(0)).replace(/\.0+$/, ''),
-      monthlyInsuranceCost: prettify((selectedState.carInsurance.average / 12).toFixed(0)).replace(/\.0+$/, ''),
-      monthlyFuelCost: prettify((typeOfCar === "Gas" ? selectedState.priceGas.regular * monthlyDrivingDistanceValue / DEF_CAR_MPG
-        : selectedState.costPerKWH * monthlyDrivingDistanceValue / DEF_CAR_MPKW / 100).toFixed(0)).replace(/\.0+$/, ''),
-      monthlyLoanPayment: prettify((monthlyLoanPaymentValue).toFixed(0)).replace(/\.0+$/, ''),
-      totalLoanAmount: prettify(totalLoanAmountValue.toFixed(0)).replace(/\.0+$/, ''),
-      totalInterestPaid: prettify(totalInterestPaidValue.toFixed(0)).replace(/\.0+$/, ''),
-      estimatedMonthlyPayment: prettify(estimatedMonthlyPaymentValue.toFixed(0)).replace(/\.0+$/, ''),
-      monthlyMaintenanceCost: DEF_MONTHLY_MAINTENANCE_COST,
-    })
+  }, [annualIncome, selectedState, newOrUsed, typeOfCar, loanLength, selectedStateName, loanInterest, monthlyDrivingDistance]);
 
-  }, [annualIncome, selectedState, newOrUsed, typeOfCar, loanLength]);
+  const changePaymentDown = useCallback((val) => {
+    setDownPayment(val)
+    setAnnualIncome((val / 0.072).toFixed(3).replace(/\.0+$/, ""))
+  }, [])
 
+  const changeSate = useCallback((val) => {
+    setSelectedStateName(val);
+    setSelectedState(dataByState[val])
+
+    !monthlyDrivingDistance && setMonthlyDrivingDistance((dataByState[val].averageAnnualMileage / 12).toFixed(0))
+    !loanInterest && setLoanInterest(dataByState[val].newOrUsed[newOrUsed.toLocaleLowerCase()])
+  }, [newOrUsed, loanInterest, monthlyDrivingDistance])
 
   return (
     <div className="calculator">
       <h2>Car Affordability Calculator</h2>
       <div className="content">
         <div className="row_wrap grid-2">
-          <div className="wrap_input row-50">
-            <label>Annual income</label>
-            <input type="number" value={annualIncome} onChange={(e) => setAnnualIncome(e.target.value.replace(/[^0-9]/g, ""))} />
-          </div>
-          <div className="wrap_select row-50">
-            <label>State of Residence</label>
-            <select value={selectedStateName} onChange={(e) => { setSelectedStateName(e.target.value); setSelectedState(dataByState[e.target.value]) }} >
-              {Object.keys(dataByState).map((state) => (
-                <option key={state} value={state}>{state}</option>
-              ))}
-            </select>
-          </div>
+          <FormControl>
+            <InputLabel>Annual income</InputLabel>
+            <OutlinedInput
+              value={annualIncome} onChange={(e) => e.target.value.length <= 13 && setAnnualIncome(e.target.value.replace(/[^0-9]/g, ""))}
+              startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              label="Annual income"
+            />
+          </FormControl>
+          <Autocomplete
+            value={selectedStateName}
+            onChange={(e, value) => changeSate(value)}
+            options={Object.keys(dataByState)}
+            renderInput={(params) => <TextField {...params} label="State of Residence" />}
+          />
         </div>
-
-        {annualIncome && annualIncome !== "0" && selectedStateName &&
+        {(!!annualIncome && annualIncome !== "0" && !!selectedStateName) &&
           <>
             <div className="row_wrap grid-2">
-              <div className="wrap_select row-50">
-                <label>New or Used?</label>
-                <select value={newOrUsed} onChange={(e) => setNewOrUsed(e.target.value)} >
-                  <option value="Used">Used</option>
-                  <option value="New">New</option>
-                </select>
+              <div className="row_inner">
+                <FormControl>
+                  <InputLabel>New or Used?</InputLabel>
+                  <Select label="New or Used?" value={newOrUsed} onChange={(e) => setNewOrUsed(e.target.value)}  >
+                    <MenuItem value="New">New</MenuItem>
+                    <MenuItem value="Used">Used</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Car Type</InputLabel>
+                  <Select label="Car Type" value={typeOfCar} onChange={(e) => setTypeOfCar(e.target.value)}    >
+                    <MenuItem value="Electric">Electric</MenuItem>
+                    <MenuItem value="Gas">Gas</MenuItem>
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Loan Length</InputLabel>
+                  <Select label="Loan Length" value={loanLength} onChange={(e) => setLoanLength(e.target.value)}   >
+                    {loanLengthOptions.map((length) => <MenuItem key={length} value={length}>{length}</MenuItem>)}
+                  </Select>
+                  <FormHelperText>Recommended: 48 months or lower</FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Car Loan Interest Rate</InputLabel>
+                  <OutlinedInput
+                    value={loanInterest} onChange={(e) => e.target.value <= 100 && setLoanInterest(e.target.value.replace(/[^0-9]/g, ""))}
+                    endAdornment={<InputAdornment position="end">%</InputAdornment>}
+                    label="Car Loan Interest Rate"
+                  />
+                  <FormHelperText>Default car interest rate based on state average for {newOrUsed.toLocaleLowerCase()}</FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Down Payment Amount</InputLabel>
+                  <OutlinedInput
+                    value={downPayment} onChange={(e) => e.target.value.length <= 13 && changePaymentDown(e.target.value.replace(/[^0-9]/g, ""))}
+                    startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                    label="Down Payment Amount"
+                  />
+                  <FormHelperText>Recommended: Down Payment should be between 10-20%, at least, to reduce total interest paid and lower monthly payment</FormHelperText>
+                </FormControl>
+                <FormControl>
+                  <InputLabel>Estimated Monthly Driving Distance</InputLabel>
+                  <OutlinedInput
+                    value={monthlyDrivingDistance} onChange={(e) => e.target.value.length <= 7 && setMonthlyDrivingDistance(e.target.value.replace(/[^0-9]/g, ""))}
+                    endAdornment={<InputAdornment position="end">miles</InputAdornment>}
+                    label="Estimated Monthly Driving Distance"
+                  />
+                </FormControl>
               </div>
-              <div className="wrap_select row-50">
-                <label>Car Type</label>
-                <select value={typeOfCar} onChange={(e) => setTypeOfCar(e.target.value)} >
-                  <option value="Electric">Electric</option>
-                  <option value="Gas">Gas</option>
-                </select>
-              </div>
-            </div>
-            <div className="row_wrap grid-4">
-              <div className="wrap_select row-25">
-                <label>Loan Length</label>
-                <select value={loanLength} onChange={(e) => setLoanLength(e.target.value)} >
-                  {loanLengthOptions.map((length) => (<option key={length} value={length}>{length} months</option>))}
-                </select>
-              </div>
-              <div className="wrap_input row-25">
-                <label>Car Loan Interest Rate</label>
-                <input type="number" value={loanInterest} onChange={(e) => e.target.value <= 100 && setLoanInterest(e.target.value.replace(/[^0-9]/g, ""))} />
-                <span className="val">%</span>
-              </div>
-              <div className="wrap_input row-25">
-                <label>Down Payment Amount</label>
-                <input type="number" value={downPayment} onChange={(e) => setDownPayment(e.target.value.replace(/[^0-9]/g, ""))} />
-                <span className="val">$</span>
-              </div>
-              <div className="wrap_input row-25">
-                <label>Estimated Monthly Driving Distance</label>
-                <input type="number" value={monthlyDrivingDistance} onChange={(e) => setMonthlyDrivingDistance(e.target.value.replace(/[^0-9]/g, ""))} />
-                <span className="val">miles</span>
-              </div>
-            </div>
-            <div className="row_wrap total_block_item">
-              <p>Price of car you can afford:</p>
-              <span>${priceAfford}</span>
+              {!!(totalData.recommendedBudgetL !== "0" && !!selectedStateName) &&
+                <div className="row_inner total_block">
+                  <div className="total_inner">
+                    <div className="total_block_item">
+                      <p>Price of car you can afford:</p>
+                      <p className="helper">*Including sales taxes</p>
+                      <span>${priceAfford}</span>
+                    </div>
+                  </div>
+                  <span className="border_line"></span>
+                  <div className="total_inner">
+                    <div className="total_block_item">
+                      <p>Estimated monthly payment:</p>
+                      <span>${totalData.estimatedMonthlyPayment}</span>
+                    </div>
+                    <div className="total_block_item">
+                      <p>Recommended budget (low-high):</p>
+                      <span>${totalData.recommendedBudgetL} - {totalData.recommendedBudgetH}</span>
+                    </div>
+                  </div>
+                  <span className="border_line"></span>
+                  <div className="total_inner">
+                    <div className="row_wrap grid-2">
+                      <div className="total_block_item">
+                        <p>Total Loan Amount (including Interest):</p>
+                        <span>${totalData.totalLoanAmount}</span>
+                      </div>
+                      <div className="total_block_item">
+                        <p>Estimated Monthly Insurance Cost:</p>
+                        <span>${totalData.monthlyInsuranceCost}</span>
+                      </div>
+                    </div>
+                    <div className="row_wrap grid-2">
+                      <div className="total_block_item">
+                        <p>Total Interest <br /> Paid:</p>
+                        <span>${totalData.totalInterestPaid}</span>
+                      </div>
+                      <div className="total_block_item">
+                        <p>Estimated Monthly Fuel Cost:</p>
+                        <span>${totalData.monthlyFuelCost}</span>
+                      </div>
+                    </div>
+                    <div className="row_wrap grid-2">
+                      <div className="total_block_item">
+                        <p>Monthly Loan <br /> Payment:</p>
+                        <span>${totalData.monthlyLoanPayment}</span>
+                      </div>
+                      <div className="total_block_item">
+                        <p>Monthly Maintenance and Depreciation:</p>
+                        <span>${totalData.monthlyMaintenanceCost}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>}
             </div>
           </>}
-
-        {totalData.recommendedBudgetL !== "0" && <div className="total_block">
-          <div className="total_block_item">
-            <p>Estimated monthly payment:</p>
-            <span>${totalData.estimatedMonthlyPayment}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Recommended budget (low):</p>
-            <span>${totalData.recommendedBudgetL}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Recommended budget (high):</p>
-            <span>${totalData.recommendedBudgetH}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Total Loan Amount (including Interest):</p>
-            <span>${totalData.totalLoanAmount}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Total Interest Paid:</p>
-            <span>${totalData.totalInterestPaid}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Monthly Loan Payment:</p>
-            <span>${totalData.monthlyLoanPayment}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Estimated Monthly Insurance Cost:</p>
-            <span>${totalData.monthlyInsuranceCost}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Estimated Monthly Fuel Cost:</p>
-            <span>${totalData.monthlyFuelCost}</span>
-          </div>
-          <div className="total_block_item">
-            <p>Estimated Monthly Maintenance Cost:</p>
-            <span>${totalData.monthlyMaintenanceCost}</span>
-          </div>
-        </div>}
       </div>
-    </div>
-  )
+    </div >)
 }
