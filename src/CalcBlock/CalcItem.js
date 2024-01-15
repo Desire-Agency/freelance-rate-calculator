@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useCallback } from "react"
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -451,7 +451,7 @@ export default function CalcItem() {
 
   const [totalData, setTotalData] = useState({})
 
-  const prettify = (str) => str === "NaN" ? "0" : str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1 ");
+  const prettify = (str) => str === "NaN" ? "0" : str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1,");
 
   const changeTotalInfo = useCallback((obj) => {
     if ((!!selectedStateName || obj.stateName) && (!!obj.annualIncome || annualIncome)) {
@@ -652,42 +652,45 @@ export default function CalcItem() {
                   <span className="border_line"></span>
                   <div className="total_inner">
                     <div className="total_block_item">
+                      <p>Total Loan Amount (including Interest):</p>
+                      <span>${totalData.totalLoanAmount}</span>
+                    </div>
+                    <div className="total_block_item">
                       <p>Estimated monthly payment:</p>
                       <span>${totalData.estimatedMonthlyPayment}</span>
                     </div>
                     <div className="total_block_item">
-                      <p>Recommended budget (low-high):</p>
+                      <p>Recommended monthly budget (low - high):</p>
                       <span>${totalData.recommendedBudgetL} - {totalData.recommendedBudgetH}</span>
                     </div>
                   </div>
                   <span className="border_line"></span>
-                  <div className="row_wrap grid-2">
-                    <div className="total_inner first">
-                      <div className="total_block_item">
-                        <p>Total Loan Amount (including Interest):</p>
-                        <span>${totalData.totalLoanAmount}</span>
+                  <div className="row_wrap">
+                    <h3>Breakdown of Estimated Monthly Payment</h3>
+                    <div className="row_wrap grid-2">
+                      <div className="total_inner first">
+                        <div className="total_block_item">
+                          <p>Monthly Loan <br /> Payment:</p>
+                          <span>${totalData.monthlyLoanPayment}</span>
+                        </div>
+                        <div className="total_block_item">
+                          <p>Monthly Interest <br /> Paid:</p>
+                          <span>${totalData.monthlyInterestPaid}</span>
+                        </div>
+                        <div className="total_block_item">
+                          <p>Estimated Monthly Maintenance:</p>
+                          <span>${totalData.monthlyMaintenance}</span>
+                        </div>
                       </div>
-                      <div className="total_block_item">
-                        <p>Monthly Loan <br /> Payment:</p>
-                        <span>${totalData.monthlyLoanPayment}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Monthly Interest <br /> Paid:</p>
-                        <span>${totalData.monthlyInterestPaid}</span>
-                      </div>
-                    </div>
-                    <div className="total_inner last">
-                      <div className="total_block_item">
-                        <p>Estimated Monthly Insurance Cost:</p>
-                        <span>${totalData.monthlyInsuranceCost}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Estimated Monthly Fuel Cost:</p>
-                        <span>${totalData.monthlyFuelCost}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Estimated Monthly Maintenance:</p>
-                        <span>${totalData.monthlyMaintenance}</span>
+                      <div className="total_inner last">
+                        <div className="total_block_item">
+                          <p>Estimated Monthly Insurance Cost:</p>
+                          <span>${totalData.monthlyInsuranceCost}</span>
+                        </div>
+                        <div className="total_block_item">
+                          <p>Estimated Monthly Fuel Cost:</p>
+                          <span>${totalData.monthlyFuelCost}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
