@@ -426,7 +426,7 @@ export default function MoveCalcItem() {
   };
 
   useEffect(() => {
-    if (currentHomeFields?.stateName && selectedStateCurrentHome?.costPerKWh && newHomeFields?.stateName && selectedStateNewHome?.costPerKWh) {
+    if (Object.values(currentHomeFields).every(x => x !== '' && x !== null) && Object.values(newHomeFields).every(x => x !== '' && x !== null)) {
       const homeSizeAdjustMultipleCurrentHomeValue = getHomeSizeAdjust(Number(currentHomeFields.homeSize)) / getHomeSizeAdjust(Number(selectedStateCurrentHome.medianHomeSize));
       const familySizeAdjustMultipleCurrentHomeValue = getHFamilySizeAdjust(Number(currentHomeFields.numberResidents)) / getHFamilySizeAdjust(Number(selectedStateCurrentHome.averageHouseholdSize));
       const monthlyConsumptionCurrentHomeValue = familySizeAdjustMultipleCurrentHomeValue * selectedStateCurrentHome.stateAverageConsumption.toFixed(0) * homeSizeAdjustMultipleCurrentHomeValue;
@@ -537,42 +537,33 @@ export default function MoveCalcItem() {
           </FormControl>
         </div>
 
-        {currentHomeFields?.stateName &&
-          newHomeFields?.stateName &&
-          totalData?.current?.monthlyConsumption &&
-          totalData?.new?.monthlyConsumption &&
-          totalData?.current?.estimatedMonthlyCost &&
-          totalData?.new?.estimatedMonthlyCost &&
-          totalData?.current?.estimatedYearlyCost &&
-          totalData?.new?.estimatedYearlyCost &&
-          <>
-            <div className="row_inner total_block">
-              <div className="total_inner">
-                <div className="total_block_item">
-                  <p>Estimated Monthly Consumption(kWh):</p>
-                  <div className="row_wrap grid-2">
-                    <span>{totalData.current.monthlyConsumption}</span>
-                    <span>{totalData.new.monthlyConsumption}</span>
-                  </div>
+        {Object.values(currentHomeFields).every(x => x !== '' && x !== null) && Object.values(newHomeFields).every(x => x !== '' && x !== null) &&
+          <div className="row_inner total_block">
+            <div className="total_inner">
+              <div className="total_block_item">
+                <p>Estimated Monthly Consumption(kWh):</p>
+                <div className="row_wrap grid-2">
+                  <span>{totalData.current.monthlyConsumption}</span>
+                  <span>{totalData.new.monthlyConsumption}</span>
                 </div>
-                <div className="total_block_item">
-                  <p>Estimated Monthly Cost:</p>
-                  <div className="row_wrap grid-2">
-                    <span>${totalData.current.estimatedMonthlyCost}</span>
-                    <span>${totalData.new.estimatedMonthlyCost}</span>
-                  </div>
+              </div>
+              <div className="total_block_item">
+                <p>Estimated Monthly Cost:</p>
+                <div className="row_wrap grid-2">
+                  <span>${totalData.current.estimatedMonthlyCost}</span>
+                  <span>${totalData.new.estimatedMonthlyCost}</span>
                 </div>
-                <div className="total_block_item">
-                  <p>Estimated Yearly Cost:</p>
-                  <div className="row_wrap grid-2">
-                    <span>${totalData.current.estimatedYearlyCost}</span>
-                    <span>${totalData.new.estimatedYearlyCost}</span>
-                  </div>
+              </div>
+              <div className="total_block_item">
+                <p>Estimated Yearly Cost:</p>
+                <div className="row_wrap grid-2">
+                  <span>${totalData.current.estimatedYearlyCost}</span>
+                  <span>${totalData.new.estimatedYearlyCost}</span>
                 </div>
               </div>
             </div>
-            {totalData.totalText && <p className="total_text">{totalData.totalText}</p>}
-          </>}
+          </div>}
+        {totalData?.totalText && <p className="total_text">{totalData.totalText}</p>}
       </div>
     </div>)
 }
