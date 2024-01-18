@@ -661,34 +661,32 @@ export default function MoveCalcItem() {
                 </div>
                 <span className="border_line"></span>
                 <div className="total_inner">
-                  <div className="row_wrap">
-                    <div className="total_block_item">
-                      <p>Average cost per kWh:</p>
-                      <div className="row_wrap grid-2">
-                        <span>${totalData.current.costPerKWh}</span>
-                        <span>${totalData.new.costPerKWh}</span>
-                      </div>
+                  <div className="total_block_item">
+                    <p>Average cost per kWh:</p>
+                    <div className="row_wrap grid-2">
+                      <span>${totalData.current.costPerKWh}</span>
+                      <span>${totalData.new.costPerKWh}</span>
                     </div>
-                    <div className="total_block_item">
-                      <p>Average monthly state consumption:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.monthlyStateConsumption}</span>
-                        <span>{totalData.new.monthlyStateConsumption}</span>
-                      </div>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Average monthly state consumption:</p>
+                    <div className="row_wrap grid-2">
+                      <span>{totalData.current.monthlyStateConsumption}</span>
+                      <span>{totalData.new.monthlyStateConsumption}</span>
                     </div>
-                    <div className="total_block_item">
-                      <p>Home Size Adjust Multiple:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.homeSizeAdjustMultiple}</span>
-                        <span>{totalData.new.homeSizeAdjustMultiple}</span>
-                      </div>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Home Size Adjust Multiple:</p>
+                    <div className="row_wrap grid-2">
+                      <span>{totalData.current.homeSizeAdjustMultiple}</span>
+                      <span>{totalData.new.homeSizeAdjustMultiple}</span>
                     </div>
-                    <div className="total_block_item">
-                      <p>Family Size Adjust Multiple:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.familySizeAdjustMultiple}</span>
-                        <span>{totalData.new.familySizeAdjustMultiple}</span>
-                      </div>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Family Size Adjust Multiple:</p>
+                    <div className="row_wrap grid-2">
+                      <span>{totalData.current.familySizeAdjustMultixple}</span>
+                      <span>{totalData.new.familySizeAdjustMultiple}</span>
                     </div>
                   </div>
                 </div>
