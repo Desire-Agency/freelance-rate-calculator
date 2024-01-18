@@ -376,15 +376,15 @@ export default function MoveCalcItem() {
   const [selectedStateNewHome, setSelectedStateNewHome] = useState(dataByState[DEF_STATE])
 
   const [currentHomeFields, setCurrentHomeFields] = useState({
-    stateName: null,
-    homeSize: null,
-    numberResidents: null,
+    stateName: "",
+    homeSize: "",
+    numberResidents: "",
   })
 
   const [newHomeFields, setNewHomeFields] = useState({
-    stateName: null,
-    homeSize: null,
-    numberResidents: null,
+    stateName: "",
+    homeSize: "",
+    numberResidents: "",
   })
 
   const [totalData, setTotalData] = useState({})
