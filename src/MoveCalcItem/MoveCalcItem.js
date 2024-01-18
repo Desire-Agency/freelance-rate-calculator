@@ -491,6 +491,8 @@ export default function MoveCalcItem() {
     setSelectedStateNewHome(dataByState[val])
   }, [newHomeFields])
 
+  console.log(currentHomeFields)
+
   return (
     <div className="calculator">
       <h2>Move & Save Calculator</h2>
@@ -560,6 +562,8 @@ export default function MoveCalcItem() {
           newHomeFields?.numberResidents &&
           currentHomeFields?.homeSize &&
           newHomeFields?.homeSize &&
+          currentHomeFields?.stateName &&
+          newHomeFields?.stateName &&
           totalData?.current?.stateName &&
           totalData?.new?.stateName &&
           <>
