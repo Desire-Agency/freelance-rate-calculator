@@ -560,6 +560,8 @@ export default function MoveCalcItem() {
           newHomeFields?.numberResidents &&
           currentHomeFields?.homeSize &&
           newHomeFields?.homeSize &&
+          currentHomeFields?.stateName &&
+          newHomeFields?.stateName &&
           totalData?.current?.stateName &&
           totalData?.new?.stateName &&
           <>
@@ -623,236 +625,90 @@ export default function MoveCalcItem() {
                 />
               </FormControl>
             </div>
-
-
-
-
-
-            {currentHomeFields?.numberResidents &&
-              newHomeFields?.numberResidents &&
-              currentHomeFields?.homeSize &&
-              newHomeFields?.homeSize &&
-              totalData.current.stateName &&
-              totalData.new.stateName &&
-              <>
-                <div className="row_wrap grid-2">
-                  <FormControl>
-                    <InputLabel>Estimated Monthly Consumption</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.current.monthlyConsumption}
-                      endAdornment={<InputAdornment position="end">kWh</InputAdornment>}
-                      label="Estimated Monthly Consumption"
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel>Estimated Monthly Consumption</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.new.monthlyConsumption}
-                      endAdornment={<InputAdornment position="end">kWh</InputAdornment>}
-                      label="Estimated Monthly Consumption"
-                    />
-                  </FormControl>
-                </div>
-                <div className="row_wrap grid-2">
-                  <FormControl>
-                    <InputLabel>Estimated Monthly Cost</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.current.estimatedMonthlyCost}
-                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                      label="Estimated Monthly Cost"
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel>Estimated Monthly Cost</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.new.estimatedMonthlyCost}
-                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                      label="Estimated Monthly Cost"
-                    />
-                  </FormControl>
-                </div>
-                <div className="row_wrap grid-2">
-                  <FormControl>
-                    <InputLabel>Estimated Yearly Cost</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.current.estimatedYearlyCost}
-                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                      label="Estimated Yearly Cost"
-                    />
-                  </FormControl>
-                  <FormControl>
-                    <InputLabel>Estimated Yearly Cost</InputLabel>
-                    <OutlinedInput
-                      readOnly={true}
-                      value={totalData.new.estimatedYearlyCost}
-                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                      label="Estimated Yearly Cost"
-                    />
-                  </FormControl>
-                </div>
-              </>}
-
-            {totalData.current &&
-              <div className="row_wrap grid-2">
-                <div className="row_inner total_block">
-                  <div className="total_inner">
-                    <div className="total_block_item">
-                      <p>State:</p>
-                      <span>{totalData.current.stateName}</span>
-                    </div>
-                    <div className="total_block_item">
-                      <p>Division:</p>
-                      <span>{totalData.current.division}</span>
-                    </div>
-                    <div className="total_block_item">
-                      <p>Median Home Size:</p>
-                      <span>{totalData.current.medianHomeSize}</span>
-                    </div>
-                    <div className="total_block_item">
-                      <p>Average Household Size:</p>
-                      <span>{totalData.current.averageHouseholdSize}</span>
-                    </div>
-                  </div>
-                  <span className="border_line"></span>
-                  <div className="row_wrap">
-                    <div className="total_inner">
-                      <div className="total_block_item">
-                        <p>Average cost per kWh:</p>
-                        <span>${totalData.current.costPerKWh}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Average monthly state consumption:</p>
-                        <span>{totalData.current.monthlyStateConsumption}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Home Size Adjust Multiple:</p>
-                        <span>{totalData.current.homeSizeAdjustMultiple}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Family Size Adjust Multiple:</p>
-                        <span>{totalData.current.familySizeAdjustMultiple}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {totalData.new &&
-                  <div className="row_inner total_block">
-                    <div className="total_inner">
-                      <div className="total_block_item">
-                        <p>State:</p>
-                        <span>{totalData.new.stateName}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Division:</p>
-                        <span>{totalData.new.division}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Median Home Size:</p>
-                        <span>{totalData.new.medianHomeSize}</span>
-                      </div>
-                      <div className="total_block_item">
-                        <p>Average Household Size:</p>
-                        <span>{totalData.new.averageHouseholdSize}</span>
-                      </div>
-                    </div>
-                    <span className="border_line"></span>
-                    <div className="row_wrap">
-                      <div className="total_inner">
-                        <div className="total_block_item">
-                          <p>Average cost per kWh:</p>
-                          <span>${totalData.new.costPerKWh}</span>
-                        </div>
-                        <div className="total_block_item">
-                          <p>Average monthly state consumption:</p>
-                          <span>{totalData.new.monthlyStateConsumption}</span>
-                        </div>
-                        <div className="total_block_item">
-                          <p>Home Size Adjust Multiple:</p>
-                          <span>{totalData.new.homeSizeAdjustMultiple}</span>
-                        </div>
-                        <div className="total_block_item">
-                          <p>Family Size Adjust Multiple:</p>
-                          <span>{totalData.new.familySizeAdjustMultiple}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>}
-              </div>}
-
-
-            {/* <div className="row_wrap">
+            <div className="row_wrap grid-2">
               <div className="row_inner total_block">
                 <div className="total_inner">
                   <div className="total_block_item">
-                    <p>Current State/New State:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.stateName}</span>
-                      <span>{totalData.new.stateName}</span>
-                    </div>
+                    <p>State:</p>
+                    <span>{totalData.current.stateName}</span>
                   </div>
                   <div className="total_block_item">
                     <p>Division:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.division}</span>
-                      <span>{totalData.new.division}</span>
-                    </div>
+                    <span>{totalData.current.division}</span>
                   </div>
                   <div className="total_block_item">
                     <p>Median Home Size:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.medianHomeSize}</span>
-                      <span>{totalData.new.medianHomeSize}</span>
-                    </div>
+                    <span>{totalData.current.medianHomeSize}</span>
                   </div>
                   <div className="total_block_item">
                     <p>Average Household Size:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.averageHouseholdSize}</span>
-                      <span>{totalData.new.averageHouseholdSize}</span>
-                    </div>
+                    <span>{totalData.current.averageHouseholdSize}</span>
                   </div>
                 </div>
                 <span className="border_line"></span>
-                <div className="total_inner">
-                  <div className="row_wrap">
+                <div className="row_wrap">
+                  <div className="total_inner">
                     <div className="total_block_item">
                       <p>Average cost per kWh:</p>
-                      <div className="row_wrap grid-2">
-                        <span>${totalData.current.costPerKWh}</span>
-                        <span>${totalData.new.costPerKWh}</span>
-                      </div>
+                      <span>${totalData.current.costPerKWh}</span>
                     </div>
                     <div className="total_block_item">
                       <p>Average monthly state consumption:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.monthlyStateConsumption}</span>
-                        <span>{totalData.new.monthlyStateConsumption}</span>
-                      </div>
+                      <span>{totalData.current.monthlyStateConsumption}</span>
                     </div>
                     <div className="total_block_item">
                       <p>Home Size Adjust Multiple:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.homeSizeAdjustMultiple}</span>
-                        <span>{totalData.new.homeSizeAdjustMultiple}</span>
-                      </div>
+                      <span>{totalData.current.homeSizeAdjustMultiple}</span>
                     </div>
                     <div className="total_block_item">
                       <p>Family Size Adjust Multiple:</p>
-                      <div className="row_wrap grid-2">
-                        <span>{totalData.current.familySizeAdjustMultiple}</span>
-                        <span>{totalData.new.familySizeAdjustMultiple}</span>
-                      </div>
+                      <span>{totalData.current.familySizeAdjustMultiple}</span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div> */}
+              <div className="row_inner total_block">
+                <div className="total_inner">
+                  <div className="total_block_item">
+                    <p>State:</p>
+                    <span>{totalData.new.stateName}</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Division:</p>
+                    <span>{totalData.new.division}</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Median Home Size:</p>
+                    <span>{totalData.new.medianHomeSize}</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Average Household Size:</p>
+                    <span>{totalData.new.averageHouseholdSize}</span>
+                  </div>
+                </div>
+                <span className="border_line"></span>
+                <div className="row_wrap">
+                  <div className="total_inner">
+                    <div className="total_block_item">
+                      <p>Average cost per kWh:</p>
+                      <span>${totalData.new.costPerKWh}</span>
+                    </div>
+                    <div className="total_block_item">
+                      <p>Average monthly state consumption:</p>
+                      <span>{totalData.new.monthlyStateConsumption}</span>
+                    </div>
+                    <div className="total_block_item">
+                      <p>Home Size Adjust Multiple:</p>
+                      <span>{totalData.new.homeSizeAdjustMultiple}</span>
+                    </div>
+                    <div className="total_block_item">
+                      <p>Family Size Adjust Multiple:</p>
+                      <span>{totalData.new.familySizeAdjustMultiple}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             {totalData.totalText && <p className="total_text">{totalData.totalText}</p>}
           </>}
       </div>
