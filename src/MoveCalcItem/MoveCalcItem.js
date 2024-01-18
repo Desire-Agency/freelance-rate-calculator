@@ -441,13 +441,11 @@ export default function MoveCalcItem() {
 
       setTotalData({
         current: {
-          stateName: currentHomeFields.stateName,
           monthlyConsumption: prettify((monthlyConsumptionCurrentHomeValue).toFixed(0)).replace(/\.0+$/, ""),
           estimatedMonthlyCost: prettify((estimatedMonthlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
           estimatedYearlyCost: prettify((estimatedYearlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
         },
         new: {
-          stateName: newHomeFields.stateName,
           monthlyConsumption: prettify((monthlyConsumptionNewHomeValue).toFixed(0)).replace(/\.0+$/, ""),
           estimatedMonthlyCost: prettify((estimatedMonthlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
           estimatedYearlyCost: prettify((estimatedYearlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
@@ -539,8 +537,8 @@ export default function MoveCalcItem() {
           </FormControl>
         </div>
 
-        {totalData?.current?.stateName &&
-          totalData?.new?.stateName &&
+        {currentHomeFields?.stateName &&
+          newHomeFields?.stateName &&
           totalData?.current?.monthlyConsumption &&
           totalData?.new?.monthlyConsumption &&
           totalData?.current?.estimatedMonthlyCost &&
