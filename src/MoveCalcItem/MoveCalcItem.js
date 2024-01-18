@@ -685,7 +685,7 @@ export default function MoveCalcItem() {
                   <div className="total_block_item">
                     <p>Family Size Adjust Multiple:</p>
                     <div className="row_wrap grid-2">
-                      <span>{totalData.current.familySizeAdjustMultixple}</span>
+                      <span>{totalData.current.familySizeAdjustMultiple}</span>
                       <span>{totalData.new.familySizeAdjustMultiple}</span>
                     </div>
                   </div>
