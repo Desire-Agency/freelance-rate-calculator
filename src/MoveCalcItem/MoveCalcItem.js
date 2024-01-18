@@ -442,30 +442,12 @@ export default function MoveCalcItem() {
       setTotalData({
         current: {
           stateName: currentHomeFields.stateName,
-          division: selectedStateCurrentHome.division,
-          medianHomeSize: prettify((selectedStateCurrentHome.medianHomeSize).toFixed(2)).replace(/\.0+$/, ""),
-          averageHouseholdSize: prettify((selectedStateCurrentHome.averageHouseholdSize).toFixed(2)).replace(/\.0+$/, ""),
-
-          costPerKWh: prettify((selectedStateCurrentHome.costPerKWh).toFixed(3)).replace(/\.0+$/, ""),
-          monthlyStateConsumption: prettify((selectedStateCurrentHome.stateAverageConsumption).toFixed(0)).replace(/\.0+$/, ""),
-          homeSizeAdjustMultiple: prettify((homeSizeAdjustMultipleCurrentHomeValue).toFixed(3)).replace(/\.0+$/, ""),
-          familySizeAdjustMultiple: prettify((familySizeAdjustMultipleCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
-
           monthlyConsumption: prettify((monthlyConsumptionCurrentHomeValue).toFixed(0)).replace(/\.0+$/, ""),
           estimatedMonthlyCost: prettify((estimatedMonthlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
           estimatedYearlyCost: prettify((estimatedYearlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
         },
         new: {
           stateName: newHomeFields.stateName,
-          division: selectedStateNewHome.division,
-          medianHomeSize: prettify((selectedStateNewHome.medianHomeSize).toFixed(2)).replace(/\.0+$/, ""),
-          averageHouseholdSize: prettify((selectedStateNewHome.averageHouseholdSize).toFixed(2)).replace(/\.0+$/, ""),
-
-          costPerKWh: prettify((selectedStateNewHome.costPerKWh).toFixed(3)).replace(/\.0+$/, ""),
-          monthlyStateConsumption: prettify((selectedStateNewHome.stateAverageConsumption).toFixed(0)).replace(/\.0+$/, ""),
-          homeSizeAdjustMultiple: prettify((homeSizeAdjustMultipleNewHomeValue).toFixed(3)).replace(/\.0+$/, ""),
-          familySizeAdjustMultiple: prettify((familySizeAdjustMultipleNewHomeValue).toFixed(3)).replace(/\.0+$/, ""),
-
           monthlyConsumption: prettify((monthlyConsumptionNewHomeValue).toFixed(0)).replace(/\.0+$/, ""),
           estimatedMonthlyCost: prettify((estimatedMonthlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
           estimatedYearlyCost: prettify((estimatedYearlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
@@ -476,8 +458,6 @@ export default function MoveCalcItem() {
             `Your annual electricity spend will increase by $${prettify((estimatedYearlyCostCurrentHomeValue - estimatedYearlyCostNewHomeValue).toFixed(0)).replace(/\.0+$/, "")} if you move` :
             "Your estimated electricity bill will be exactly the same if you move."
       })
-
-
     }
   }, [currentHomeFields, newHomeFields, selectedStateNewHome, selectedStateCurrentHome])
 
@@ -490,8 +470,6 @@ export default function MoveCalcItem() {
     setNewHomeFields({ ...newHomeFields, stateName: val })
     setSelectedStateNewHome(dataByState[val])
   }, [newHomeFields])
-
-  console.log(currentHomeFields)
 
   return (
     <div className="calculator">
@@ -513,12 +491,13 @@ export default function MoveCalcItem() {
             renderInput={(params) => <TextField  {...params} label="State" />}
           />
         </div>
-
         <div className="row_wrap grid-2">
           <FormControl>
             <InputLabel>Home Size</InputLabel>
             <OutlinedInput
               type="number"
+              onWheel={(e) => e.target.blur()}
+
               value={currentHomeFields.homeSize}
               onChange={(e) => e.target.value.length <= 13 && setCurrentHomeFields({ ...currentHomeFields, homeSize: e.target.value })}
               endAdornment={<InputAdornment position="end">sqft</InputAdornment>}
@@ -528,6 +507,7 @@ export default function MoveCalcItem() {
           <FormControl>
             <InputLabel>Home Size</InputLabel>
             <OutlinedInput
+              onWheel={(e) => e.target.blur()}
               type="number"
               value={newHomeFields.homeSize}
               onChange={(e) => e.target.value.length <= 13 && setNewHomeFields({ ...newHomeFields, homeSize: e.target.value })}
@@ -536,12 +516,12 @@ export default function MoveCalcItem() {
             />
           </FormControl>
         </div>
-
         <div className="row_wrap grid-2">
           <FormControl>
             <InputLabel>Number of Residents</InputLabel>
             <OutlinedInput
               type="number"
+              onWheel={(e) => e.target.blur()}
               value={currentHomeFields.numberResidents}
               onChange={(e) => e.target.value.length <= 4 && setCurrentHomeFields({ ...currentHomeFields, numberResidents: e.target.value })}
               label="Number of Residents"
@@ -551,6 +531,7 @@ export default function MoveCalcItem() {
             <InputLabel>Number of Residents</InputLabel>
             <OutlinedInput
               type="number"
+              onWheel={(e) => e.target.blur()}
               value={newHomeFields.numberResidents}
               onChange={(e) => e.target.value.length <= 4 && setNewHomeFields({ ...newHomeFields, numberResidents: e.target.value })}
               label="Number of Residents"
@@ -558,136 +539,36 @@ export default function MoveCalcItem() {
           </FormControl>
         </div>
 
-        {currentHomeFields?.numberResidents &&
-          newHomeFields?.numberResidents &&
-          currentHomeFields?.homeSize &&
-          newHomeFields?.homeSize &&
-          currentHomeFields?.stateName &&
-          newHomeFields?.stateName &&
-          totalData?.current?.stateName &&
+        {totalData?.current?.stateName &&
           totalData?.new?.stateName &&
+          totalData?.current?.monthlyConsumption &&
+          totalData?.new?.monthlyConsumption &&
+          totalData?.current?.estimatedMonthlyCost &&
+          totalData?.new?.estimatedMonthlyCost &&
+          totalData?.current?.estimatedYearlyCost &&
+          totalData?.new?.estimatedYearlyCost &&
           <>
-            <div className="row_wrap grid-2">
-              <FormControl>
-                <InputLabel>Estimated Monthly Consumption</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.current.monthlyConsumption}
-                  endAdornment={<InputAdornment position="end">kWh</InputAdornment>}
-                  label="Estimated Monthly Consumption"
-                />
-              </FormControl>
-              <FormControl>
-                <InputLabel>Estimated Monthly Consumption</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.new.monthlyConsumption}
-                  endAdornment={<InputAdornment position="end">kWh</InputAdornment>}
-                  label="Estimated Monthly Consumption"
-                />
-              </FormControl>
-            </div>
-            <div className="row_wrap grid-2">
-              <FormControl>
-                <InputLabel>Estimated Monthly Cost</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.current.estimatedMonthlyCost}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  label="Estimated Monthly Cost"
-                />
-              </FormControl>
-              <FormControl>
-                <InputLabel>Estimated Monthly Cost</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.new.estimatedMonthlyCost}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  label="Estimated Monthly Cost"
-                />
-              </FormControl>
-            </div>
-            <div className="row_wrap grid-2">
-              <FormControl>
-                <InputLabel>Estimated Yearly Cost</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.current.estimatedYearlyCost}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  label="Estimated Yearly Cost"
-                />
-              </FormControl>
-              <FormControl>
-                <InputLabel>Estimated Yearly Cost</InputLabel>
-                <OutlinedInput
-                  readOnly={true}
-                  value={totalData.new.estimatedYearlyCost}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  label="Estimated Yearly Cost"
-                />
-              </FormControl>
-            </div>
-            <div className="row_wrap">
-              <div className="row_inner total_block">
-                <div className="total_inner">
-                  <div className="total_block_item">
-                    <p>Current State/New State:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.stateName}</span>
-                      <span>{totalData.new.stateName}</span>
-                    </div>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Division:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.division}</span>
-                      <span>{totalData.new.division}</span>
-                    </div>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Median Home Size:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.medianHomeSize}</span>
-                      <span>{totalData.new.medianHomeSize}</span>
-                    </div>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Average Household Size:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.averageHouseholdSize}</span>
-                      <span>{totalData.new.averageHouseholdSize}</span>
-                    </div>
+            <div className="row_inner total_block">
+              <div className="total_inner">
+                <div className="total_block_item">
+                  <p>Estimated Monthly Consumption(kWh):</p>
+                  <div className="row_wrap grid-2">
+                    <span>{totalData.current.monthlyConsumption}</span>
+                    <span>{totalData.new.monthlyConsumption}</span>
                   </div>
                 </div>
-                <span className="border_line"></span>
-                <div className="total_inner">
-                  <div className="total_block_item">
-                    <p>Average cost per kWh:</p>
-                    <div className="row_wrap grid-2">
-                      <span>${totalData.current.costPerKWh}</span>
-                      <span>${totalData.new.costPerKWh}</span>
-                    </div>
+                <div className="total_block_item">
+                  <p>Estimated Monthly Cost:</p>
+                  <div className="row_wrap grid-2">
+                    <span>${totalData.current.estimatedMonthlyCost}</span>
+                    <span>${totalData.new.estimatedMonthlyCost}</span>
                   </div>
-                  <div className="total_block_item">
-                    <p>Average monthly state consumption:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.monthlyStateConsumption}</span>
-                      <span>{totalData.new.monthlyStateConsumption}</span>
-                    </div>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Home Size Adjust Multiple:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.homeSizeAdjustMultiple}</span>
-                      <span>{totalData.new.homeSizeAdjustMultiple}</span>
-                    </div>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Family Size Adjust Multiple:</p>
-                    <div className="row_wrap grid-2">
-                      <span>{totalData.current.familySizeAdjustMultiple}</span>
-                      <span>{totalData.new.familySizeAdjustMultiple}</span>
-                    </div>
+                </div>
+                <div className="total_block_item">
+                  <p>Estimated Yearly Cost:</p>
+                  <div className="row_wrap grid-2">
+                    <span>${totalData.current.estimatedYearlyCost}</span>
+                    <span>${totalData.new.estimatedYearlyCost}</span>
                   </div>
                 </div>
               </div>
