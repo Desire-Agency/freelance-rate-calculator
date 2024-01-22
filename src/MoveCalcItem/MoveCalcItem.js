@@ -539,7 +539,8 @@ export default function MoveCalcItem() {
           </FormControl>
         </div>
 
-        {totalData?.new && Object.values(totalData.new).every(x => !!x) &&
+        {totalData?.new && totalData?.current &&
+          Object.values(totalData.new).every(x => !!x) &&
           Object.values(totalData.current).every(x => !!x) &&
           <div className="row_inner total_block">
             <div className="total_inner">
