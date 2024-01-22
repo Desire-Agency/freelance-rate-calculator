@@ -426,7 +426,7 @@ export default function MoveCalcItem() {
   };
 
   useEffect(() => {
-    if (Object.values(currentHomeFields).every(x => x !== '' && x !== null) && Object.values(newHomeFields).every(x => x !== '' && x !== null)) {
+    if (Object.values(currentHomeFields).every(x => !!x) && Object.values(newHomeFields).every(x => !!x)) {
       const homeSizeAdjustMultipleCurrentHomeValue = getHomeSizeAdjust(Number(currentHomeFields.homeSize)) / getHomeSizeAdjust(Number(selectedStateCurrentHome.medianHomeSize));
       const familySizeAdjustMultipleCurrentHomeValue = getHFamilySizeAdjust(Number(currentHomeFields.numberResidents)) / getHFamilySizeAdjust(Number(selectedStateCurrentHome.averageHouseholdSize));
       const monthlyConsumptionCurrentHomeValue = familySizeAdjustMultipleCurrentHomeValue * selectedStateCurrentHome.stateAverageConsumption.toFixed(0) * homeSizeAdjustMultipleCurrentHomeValue;
@@ -456,6 +456,8 @@ export default function MoveCalcItem() {
             `Your annual electricity spend will increase by $${prettify((estimatedYearlyCostCurrentHomeValue - estimatedYearlyCostNewHomeValue).toFixed(0)).replace(/\.0+$/, "")} if you move` :
             "Your estimated electricity bill will be exactly the same if you move."
       })
+    } else {
+      setTotalData({})
     }
   }, [currentHomeFields, newHomeFields, selectedStateNewHome, selectedStateCurrentHome])
 
@@ -537,7 +539,8 @@ export default function MoveCalcItem() {
           </FormControl>
         </div>
 
-        {Object.values(currentHomeFields).every(x => x !== '' && x !== null) && Object.values(newHomeFields).every(x => x !== '' && x !== null) &&
+        {totalData?.new && Object.values(totalData.new).every(x => !!x) &&
+          Object.values(totalData.current).every(x => !!x) &&
           <div className="row_inner total_block">
             <div className="total_inner">
               <div className="total_block_item">
