@@ -193,4 +193,7 @@ input::-webkit-inner-spin-button {
   .calculator .row_wrap.grid-2 {
     gap: 10px;
   }
+  .calculator .total_inner {
+    padding: 20px 10px;
+  }
 }
