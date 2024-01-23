@@ -450,10 +450,10 @@ export default function MoveCalcItem() {
           estimatedMonthlyCost: prettify((estimatedMonthlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
           estimatedYearlyCost: prettify((estimatedYearlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
         },
-        totalText: estimatedYearlyCostCurrentHomeValue < estimatedYearlyCostNewHomeValue ?
-          `You will save an estimated $${prettify((estimatedYearlyCostNewHomeValue - estimatedYearlyCostCurrentHomeValue).toFixed(0)).replace(/\.0+$/, "")} annually on your electricity bill if you move.` :
-          estimatedYearlyCostCurrentHomeValue > estimatedYearlyCostNewHomeValue ?
-            `Your annual electricity spend will increase by $${prettify((estimatedYearlyCostCurrentHomeValue - estimatedYearlyCostNewHomeValue).toFixed(0)).replace(/\.0+$/, "")} if you move` :
+        totalText: estimatedYearlyCostCurrentHomeValue > estimatedYearlyCostNewHomeValue ?
+          `You will save an estimated $${prettify((estimatedYearlyCostCurrentHomeValue - estimatedYearlyCostNewHomeValue).toFixed(0)).replace(/\.0+$/, "")} annually on your electricity bill if you move.` :
+          estimatedYearlyCostCurrentHomeValue < estimatedYearlyCostNewHomeValue ?
+            `Your annual electricity spend will increase by $${prettify((estimatedYearlyCostNewHomeValue - estimatedYearlyCostCurrentHomeValue).toFixed(0)).replace(/\.0+$/, "")} if you move` :
             "Your estimated electricity bill will be exactly the same if you move."
       })
     } else {
@@ -540,41 +540,45 @@ export default function MoveCalcItem() {
         </div>
 
         {totalData?.new && totalData?.current &&
+          totalData?.totalText &&
           Object.values(totalData.new).every(x => !!x) &&
           Object.values(totalData.current).every(x => !!x) &&
-          <div className="row_inner total_block">
-            <div className="row_wrap grid-2">
-              <div className="total_inner">
-                <div className="total_block_item">
-                  <p>Estimated Monthly Electricity Consumption <br/> in Current Home:</p>
-                  <span>{totalData.current.monthlyConsumption} kWh</span>
+          <>
+            <h3>Find out how your electricity bill will be impacted by moving</h3>
+            <div className="row_inner total_block">
+              <div className="row_wrap grid-2">
+                <div className="total_inner">
+                  <div className="total_block_item">
+                    <p>Estimated Monthly Electricity Consumption <br /> in Current Home:</p>
+                    <span>{totalData.current.monthlyConsumption} kWh</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Estimated Monthly Electricity Cost <br /> in Current Home:</p>
+                    <span>${totalData.current.estimatedMonthlyCost}</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Estimated Yearly Electricity Cost <br /> in Current Home:</p>
+                    <span>${totalData.current.estimatedYearlyCost}</span>
+                  </div>
                 </div>
-                <div className="total_block_item">
-                  <p>Estimated Monthly Electricity Cost <br/> in Current Home:</p>
-                  <span>${totalData.current.estimatedMonthlyCost}</span>
-                </div>
-                <div className="total_block_item">
-                  <p>Estimated Yearly Electricity Cost <br/> in Current Home:</p>
-                  <span>${totalData.current.estimatedYearlyCost}</span>
-                </div>
-              </div>
-              <div className="total_inner">
-                <div className="total_block_item">
-                  <p>Estimated Monthly Electricity Consumption <br/> in Future Home:</p>
-                  <span>{totalData.new.monthlyConsumption} kWh</span>
-                </div>
-                <div className="total_block_item">
-                  <p>Estimated Monthly Electricity Cost <br/> in Future Home:</p>
-                  <span>${totalData.new.estimatedMonthlyCost}</span>
-                </div>
-                <div className="total_block_item">
-                  <p>Estimated Yearly Electricity Cost <br/> in Future Home:</p>
-                  <span>${totalData.new.estimatedYearlyCost}</span>
+                <div className="total_inner">
+                  <div className="total_block_item">
+                    <p>Estimated Monthly Electricity Consumption <br /> in Future Home:</p>
+                    <span>{totalData.new.monthlyConsumption} kWh</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Estimated Monthly Electricity Cost <br /> in Future Home:</p>
+                    <span>${totalData.new.estimatedMonthlyCost}</span>
+                  </div>
+                  <div className="total_block_item">
+                    <p>Estimated Yearly Electricity Cost <br /> in Future Home:</p>
+                    <span>${totalData.new.estimatedYearlyCost}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>}
-        {totalData?.totalText && <p className="total_text">{totalData.totalText}</p>}
+            <p className="total_text">{totalData.totalText}</p>
+          </>}
       </div>
     </div >)
 }

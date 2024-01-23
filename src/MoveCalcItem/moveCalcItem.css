@@ -20,6 +20,7 @@ input::-webkit-inner-spin-button {
   border-radius: 15px;
   overflow: hidden;
   background: #f1f2f8;
+  line-height: 1.2;
 }
 
 .calculator .MuiInputBase-colorPrimary {
@@ -94,12 +95,10 @@ input::-webkit-inner-spin-button {
   border-radius: 4px;
 }
 
-.calculator .total_block h3 {
+.calculator h3 {
   padding: 0 15px;
-  padding-top: 20px;
   text-align: center;
   font-size: 16px;
-  margin-bottom: -20px;
 }
 
 .calculator .total_block .border_line {
