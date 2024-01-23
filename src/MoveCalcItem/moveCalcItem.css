@@ -38,6 +38,7 @@ input::-webkit-inner-spin-button {
   background-color: rgb(213 215 230);
   color: #12396c;
   font-size: 24px;
+  text-align: center;
 }
 
 .calculator .content {
