@@ -16,9 +16,9 @@ export default function MoveCalcItem() {
       const tipAmountValue = Number(values.billedAmount) * Number(values.desiredTip) / 100;
 
       setTotalData({
-        tipAmount: prettify((tipAmountValue).toFixed(2)).replace(/\.0+$/, ""),
+        tipAmount: prettify((tipAmountValue).toFixed(0)).replace(/\.0+$/, ""),
         tipPerMover: prettify((tipAmountValue / Number(values.numberOfMovers)).toFixed(2)).replace(/\.0+$/, ""),
-        totalBill: prettify((Number(values.billedAmount) + tipAmountValue).toFixed(2)).replace(/\.0+$/, ""),
+        totalBill: prettify((Number(values.billedAmount) + tipAmountValue).toFixed(0)).replace(/\.0+$/, ""),
       })
     } else {
       setTotalData({})
