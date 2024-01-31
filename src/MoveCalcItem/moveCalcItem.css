@@ -84,7 +84,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   gap: 8px;
-  width: 75px;
+  width: 85px;
   height: 38px;
   background: #fff;
   border: none;
@@ -100,8 +100,8 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .input_item.start input {
-  padding-left: 20px;
-  text-align: flex-start;
+  padding-left: 16px;
+  text-align: start;
 }
 
 .calculator .input_item.end input {
