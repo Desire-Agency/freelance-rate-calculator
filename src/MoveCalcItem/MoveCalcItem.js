@@ -1,584 +1,108 @@
-import { useState, useCallback, useEffect } from "react"
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-import TextField from "@mui/material/TextField";
-import Autocomplete from "@mui/material/Autocomplete";
+import { useState, useEffect } from "react"
 
 import "./moveCalcItem.css"
 
-const dataByState = {
-  "Alabama": {
-    division: "East South Central",
-    medianHomeSize: 2146,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.146,
-    stateAverageConsumption: 1136.77902
-  },
-  "Alaska": {
-    division: "Pacific",
-    medianHomeSize: 1910,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.238,
-    stateAverageConsumption: 553.5931709
-  },
-  "Arizona": {
-    division: "Mountain",
-    medianHomeSize: 2049,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.140,
-    stateAverageConsumption: 1123.890574
-  },
-  "Arkansas": {
-    division: "West South Central",
-    medianHomeSize: 1860,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.123,
-    stateAverageConsumption: 1082.661373
-  },
-  "California": {
-    division: "Pacific",
-    medianHomeSize: 1860,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.289,
-    stateAverageConsumption: 499.7540338
-  },
-  "Colorado": {
-    division: "Mountain",
-    medianHomeSize: 2464,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.143,
-    stateAverageConsumption: 693.890068
-  },
-  "Connecticut": {
-    division: "New England",
-    medianHomeSize: 2158,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.305,
-    stateAverageConsumption: 672.3569012
-  },
-  "Delaware": {
-    division: "South Atlantic",
-    medianHomeSize: 2277,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.156,
-    stateAverageConsumption: 900.0154841
-  },
-  "Florida": {
-    division: "South Atlantic",
-    medianHomeSize: 1960,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.152,
-    stateAverageConsumption: 1138.183838
-  },
-  "Georgia": {
-    division: "South Atlantic",
-    medianHomeSize: 2262,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.139,
-    stateAverageConsumption: 1065.923953
-  },
-  "Hawaii": {
-    division: "Pacific",
-    medianHomeSize: 1164,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.423,
-    stateAverageConsumption: 498.3470667
-  },
-  "Idaho": {
-    division: "Mountain",
-    medianHomeSize: 2311,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.110,
-    stateAverageConsumption: 928.8990961
-  },
-  "Illinois": {
-    division: "East North Central",
-    medianHomeSize: 1700,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.159,
-    stateAverageConsumption: 678.6323614
-  },
-  "Indiana": {
-    division: "East North Central",
-    medianHomeSize: 2011,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.150,
-    stateAverageConsumption: 900.4030641
-  },
-  "Iowa": {
-    division: "West North Central",
-    medianHomeSize: 1623,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.134,
-    stateAverageConsumption: 861.1440452
-  },
-  "Kansas": {
-    division: "West North Central",
-    medianHomeSize: 2020,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.137,
-    stateAverageConsumption: 904.2241237
-  },
-  "Kentucky": {
-    division: "East South Central",
-    medianHomeSize: 1953,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.125,
-    stateAverageConsumption: 1043.237181
-  },
-  "Louisiana": {
-    division: "West South Central",
-    medianHomeSize: 1955,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.116,
-    stateAverageConsumption: 1275.069186
-  },
-  "Maine": {
-    division: "New England",
-    medianHomeSize: 1680,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.273,
-    stateAverageConsumption: 546.770582
-  },
-  "Maryland": {
-    division: "South Atlantic",
-    medianHomeSize: 2207,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.164,
-    stateAverageConsumption: 891.2711649
-  },
-  "Massachusetts": {
-    division: "New England",
-    medianHomeSize: 1800,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.295,
-    stateAverageConsumption: 564.1838176
-  },
-  "Michigan": {
-    division: "East North Central",
-    medianHomeSize: 1726,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.187,
-    stateAverageConsumption: 604.7713033
-  },
-  "Minnesota": {
-    division: "West North Central",
-    medianHomeSize: 2026,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.147,
-    stateAverageConsumption: 762.3303778
-  },
-  "Mississippi": {
-    division: "East South Central",
-    medianHomeSize: 2065,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.134,
-    stateAverageConsumption: 1206.417596
-  },
-  "Missouri": {
-    division: "West North Central",
-    medianHomeSize: 1848,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.130,
-    stateAverageConsumption: 1046.810261
-  },
-  "Montana": {
-    division: "Mountain",
-    medianHomeSize: 2200,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.124,
-    stateAverageConsumption: 854.081568
-  },
-  "Nebraska": {
-    division: "West North Central",
-    medianHomeSize: 2016,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.114,
-    stateAverageConsumption: 993.8986314
-  },
-  "Nevada": {
-    division: "Mountain",
-    medianHomeSize: 2060,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.167,
-    stateAverageConsumption: 914.9530668
-  },
-  "New Hampshire": {
-    division: "New England",
-    medianHomeSize: 1934,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.289,
-    stateAverageConsumption: 591.6385649
-  },
-  "New Jersey": {
-    division: "Middle Atlantic",
-    medianHomeSize: 1753,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.178,
-    stateAverageConsumption: 652.6124871
-  },
-  "New Mexico": {
-    division: "Mountain",
-    medianHomeSize: 2087,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.142,
-    stateAverageConsumption: 684.3620854
-  },
-  "New York": {
-    division: "Middle Atlantic",
-    medianHomeSize: 1490,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.222,
-    stateAverageConsumption: 575.5411363
-  },
-  "North Carolina": {
-    division: "South Atlantic",
-    medianHomeSize: 2152,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.132,
-    stateAverageConsumption: 989.1089285
-  },
-  "North Dakota": {
-    division: "West North Central",
-    medianHomeSize: 2190,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.111,
-    stateAverageConsumption: 1046.45788
-  },
-  "Ohio": {
-    division: "East North Central",
-    medianHomeSize: 1803,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.154,
-    stateAverageConsumption: 822.3501233
-  },
-  "Oklahoma": {
-    division: "West South Central",
-    medianHomeSize: 1941,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.124,
-    stateAverageConsumption: 1096.081766
-  },
-  "Oregon": {
-    division: "Pacific",
-    medianHomeSize: 1946,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.127,
-    stateAverageConsumption: 899.7386343
-  },
-  "Pennsylvania": {
-    division: "Middle Atlantic",
-    medianHomeSize: 2045,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.182,
-    stateAverageConsumption: 786.9233716
-  },
-  "Rhode Island": {
-    division: "New England",
-    medianHomeSize: 1913,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.274,
-    stateAverageConsumption: 554.5480597
-  },
-  "South Carolina": {
-    division: "South Atlantic",
-    medianHomeSize: 2123,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.141,
-    stateAverageConsumption: 1049.231145
-  },
-  "South Dakota": {
-    division: "West North Central",
-    medianHomeSize: 1915,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.123,
-    stateAverageConsumption: 1024.950271
-  },
-  "Tennessee": {
-    division: "East South Central",
-    medianHomeSize: 2157,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.122,
-    stateAverageConsumption: 1160.725527
-  },
-  "Texas": {
-    division: "West South Central",
-    medianHomeSize: 2170,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.143,
-    stateAverageConsumption: 1193.508393
-  },
-  "Utah": {
-    division: "Mountain",
-    medianHomeSize: 2800,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.113,
-    stateAverageConsumption: 779.1582012
-  },
-  "Vermont": {
-    division: "New England",
-    medianHomeSize: 2000,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.207,
-    stateAverageConsumption: 553.6528612
-  },
-  "Virginia": {
-    division: "South Atlantic",
-    medianHomeSize: 2105,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.145,
-    stateAverageConsumption: 986.6734377
-  },
-  "Washington": {
-    division: "Pacific",
-    medianHomeSize: 2185,
-    averageHouseholdSize: 3,
-    costPerKWh: 0.110,
-    stateAverageConsumption: 946.7261146
-  },
-  "Washington DC": {
-    division: "South Atlantic",
-    medianHomeSize: 954,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.162,
-    stateAverageConsumption: 643.2627611
-  },
-  "West Virginia": {
-    division: "South Atlantic",
-    medianHomeSize: 1752,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.141,
-    stateAverageConsumption: 956.5293829
-  },
-  "Wisconsin": {
-    division: "East North Central",
-    medianHomeSize: 1822,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.168,
-    stateAverageConsumption: 663.6287281
-  },
-  "Wyoming": {
-    division: "Mountain",
-    medianHomeSize: 2285,
-    averageHouseholdSize: 2,
-    costPerKWh: 0.115,
-    stateAverageConsumption: 853.9739538
-  }
-}
-
-const DEF_STATE = {};
-
-
 export default function MoveCalcItem() {
-  const [selectedStateCurrentHome, setSelectedStateCurrentHome] = useState(dataByState[DEF_STATE])
-  const [selectedStateNewHome, setSelectedStateNewHome] = useState(dataByState[DEF_STATE])
-
-  const [currentHomeFields, setCurrentHomeFields] = useState({
-    stateName: "",
-    homeSize: "",
-    numberResidents: "",
-  })
-
-  const [newHomeFields, setNewHomeFields] = useState({
-    stateName: "",
-    homeSize: "",
-    numberResidents: "",
-  })
-
+  const [values, setValues] = useState({})
   const [totalData, setTotalData] = useState({})
 
   const prettify = (str) => str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1,");
 
-  const getHomeSizeAdjust = (value) => {
-    switch (true) {
-      case value >= 3000:
-        return 15489
-      case value >= 2500 && value < 2999:
-        return 13031
-      case value >= 2000 && value < 2499:
-        return 12173
-      case value >= 1500 && value < 1999:
-        return 11009
-      case value >= 1000 && value < 1499:
-        return 9407
-      default:
-        return 6802;
-    }
-  };
-
-  const getHFamilySizeAdjust = (value) => {
-    switch (true) {
-      case value === 1:
-        return 7184
-      case value === 2:
-        return 10648
-      case value === 3:
-        return 12120
-      case value === 4:
-        return 13072
-      case value === 5:
-        return 14336
-      default:
-        return 14730
-    }
-  };
-
   useEffect(() => {
-    if (Object.values(currentHomeFields).every(x => !!x) && Object.values(newHomeFields).every(x => !!x)) {
-      const homeSizeAdjustMultipleCurrentHomeValue = getHomeSizeAdjust(Number(currentHomeFields.homeSize)) / getHomeSizeAdjust(Number(selectedStateCurrentHome.medianHomeSize));
-      const familySizeAdjustMultipleCurrentHomeValue = getHFamilySizeAdjust(Number(currentHomeFields.numberResidents)) / getHFamilySizeAdjust(Number(selectedStateCurrentHome.averageHouseholdSize));
-      const monthlyConsumptionCurrentHomeValue = familySizeAdjustMultipleCurrentHomeValue * selectedStateCurrentHome.stateAverageConsumption.toFixed(0) * homeSizeAdjustMultipleCurrentHomeValue;
-      const estimatedMonthlyCostCurrentHomeValue = monthlyConsumptionCurrentHomeValue * selectedStateCurrentHome.costPerKWh;
-      const estimatedYearlyCostCurrentHomeValue = estimatedMonthlyCostCurrentHomeValue * 12;
+    if (values?.billedAmount &&
+      values?.desiredTip &&
+      values?.numberOfMovers) {
 
-      const homeSizeAdjustMultipleNewHomeValue = getHomeSizeAdjust(Number(newHomeFields.homeSize)) / getHomeSizeAdjust(Number(selectedStateNewHome.medianHomeSize));
-      const familySizeAdjustMultipleNewHomeValue = getHFamilySizeAdjust(Number(newHomeFields.numberResidents)) / getHFamilySizeAdjust(Number(selectedStateNewHome.averageHouseholdSize));
-      const monthlyConsumptionNewHomeValue = familySizeAdjustMultipleNewHomeValue * selectedStateNewHome.stateAverageConsumption.toFixed(0) * homeSizeAdjustMultipleNewHomeValue;
-      const estimatedMonthlyCostNewHomeValue = monthlyConsumptionNewHomeValue * selectedStateNewHome.costPerKWh;
-      const estimatedYearlyCostNewHomeValue = estimatedMonthlyCostNewHomeValue * 12;
+      const tipAmountValue = Number(values.billedAmount) * Number(values.desiredTip) / 100;
 
       setTotalData({
-        current: {
-          monthlyConsumption: prettify((monthlyConsumptionCurrentHomeValue).toFixed(0)).replace(/\.0+$/, ""),
-          estimatedMonthlyCost: prettify((estimatedMonthlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
-          estimatedYearlyCost: prettify((estimatedYearlyCostCurrentHomeValue).toFixed(2)).replace(/\.0+$/, ""),
-        },
-        new: {
-          monthlyConsumption: prettify((monthlyConsumptionNewHomeValue).toFixed(0)).replace(/\.0+$/, ""),
-          estimatedMonthlyCost: prettify((estimatedMonthlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
-          estimatedYearlyCost: prettify((estimatedYearlyCostNewHomeValue).toFixed(2)).replace(/\.0+$/, ""),
-        },
-        totalText: estimatedYearlyCostCurrentHomeValue > estimatedYearlyCostNewHomeValue ?
-          `You will save an estimated $${prettify((estimatedYearlyCostCurrentHomeValue - estimatedYearlyCostNewHomeValue).toFixed(0)).replace(/\.0+$/, "")} annually on your electricity bill if you move.` :
-          estimatedYearlyCostCurrentHomeValue < estimatedYearlyCostNewHomeValue ?
-            `Your annual electricity spend will increase by $${prettify((estimatedYearlyCostNewHomeValue - estimatedYearlyCostCurrentHomeValue).toFixed(0)).replace(/\.0+$/, "")} if you move` :
-            "Your estimated electricity bill will be exactly the same if you move."
+        tipAmount: prettify((tipAmountValue).toFixed(0)).replace(/\.0+$/, ""),
+        tipPerMover: prettify((tipAmountValue / Number(values.numberOfMovers)).toFixed(0)).replace(/\.0+$/, ""),
+        totalBill: prettify((Number(values.billedAmount) + tipAmountValue).toFixed(0)).replace(/\.0+$/, ""),
       })
     } else {
       setTotalData({})
     }
-  }, [currentHomeFields, newHomeFields, selectedStateNewHome, selectedStateCurrentHome])
-
-  const changeSateCurrentHome = useCallback((val) => {
-    setCurrentHomeFields({ ...currentHomeFields, stateName: val })
-    setSelectedStateCurrentHome(dataByState[val])
-  }, [currentHomeFields])
-
-  const changeSateNewHome = useCallback((val) => {
-    setNewHomeFields({ ...newHomeFields, stateName: val })
-    setSelectedStateNewHome(dataByState[val])
-  }, [newHomeFields])
+  }, [values])
 
   return (
     <div className="calculator">
-      <h2>Move & Save Calculator</h2>
-      <div className="content">
-        <div className="row_wrap grid-2">
-          <h3>Current Home</h3>
-          <h3>New Home</h3>
+      <div className="calculator_top">
+        <div className="calculator_top_item">
+          <svg width="69" height="49" viewBox="0 0 69 49" fill="none" >
+            <path d="M64 41.4271H60.9593C60.9593 36.1589 56.6886 31.8881 51.4203 31.8881H50.5119C45.4945 31.8881 41.4271 35.9555 41.4271 40.9729H27.1186C27.1186 35.9555 23.0513 31.8881 18.0339 31.8881H17.8068C12.664 31.8881 8.49492 36.0572 8.49492 41.2V41.4271H5C2.79086 41.4271 1 39.6363 1 37.4271V5C1 2.79086 2.79086 1 5 1H40.1525C42.3617 1 44.1525 2.79086 44.1525 5V10.3119H57.2288C58.5662 10.3119 59.8151 10.9803 60.557 12.0931L67.3282 22.2499C67.7662 22.907 68 23.679 68 24.4687V37.4271C68 39.6363 66.2091 41.4271 64 41.4271Z" stroke="#CCC1B4" />
+            <path d="M25.0746 12.5831H7.81354" stroke="#CCC1B4" />
+            <path d="M12.8102 6.67798L7.58643 12.5831L12.8102 18.261" stroke="#CCC1B4" />
+            <path d="M21.4408 22.122L38.7018 22.122" stroke="#CCC1B4" />
+            <path d="M33.7051 28.0271L38.9288 22.122L33.7051 16.444" stroke="#CCC1B4" />
+            <circle cx="17.8067" cy="41.4272" r="6.7678" stroke="#CCC1B4" />
+            <circle cx="17.8068" cy="41.4271" r="2.22542" stroke="#CCC1B4" />
+            <circle cx="51.4204" cy="41.4272" r="6.7678" stroke="#CCC1B4" />
+            <circle cx="51.4203" cy="41.4271" r="2.22542" stroke="#CCC1B4" />
+            <path d="M53.9253 15.5356H51.1932C49.0609 15.5356 47.3322 17.2642 47.3322 19.3966C47.3322 21.529 49.0609 23.2576 51.1932 23.2576H53.9253C56.9721 23.2576 58.8185 19.8939 57.1826 17.3235C56.4738 16.2099 55.2453 15.5356 53.9253 15.5356Z" stroke="#CCC1B4" />
+          </svg>
+          <h1>Total Moving Cost Calculator</h1>
+          <svg width="82" height="49" viewBox="0 0 82 49" fill="none" >
+            <path d="M80.7175 48.7404V5C80.7175 2.79086 78.9267 1 76.7175 1H5C2.79086 1 1 2.79086 1 5V33.9313C1 36.1404 2.79086 37.9313 5 37.9313H70.8091" stroke="#CCC1B4" />
+            <path d="M39.2823 5.95422V32.9771" stroke="#CCC1B4" />
+            <path d="M43.9149 12.782C43.4002 11.8572 41.8045 10.0076 39.5398 10.0076C36.7088 10.0076 34.6499 12.0253 34.6499 14.5475C34.6499 17.0696 37.371 18.2903 39.5398 19.0873C41.5986 19.844 44.687 20.6006 44.687 23.8794C44.687 27.1582 42.1134 28.9236 39.5398 28.9236C36.9661 28.9236 33.8778 27.032 33.8778 24.3838" stroke="#CCC1B4" />
+            <circle cx="14.5114" cy="18.5648" r="3.55343" stroke="#CCC1B4" />
+            <circle cx="64.0534" cy="18.5648" r="3.55343" stroke="#CCC1B4" />
+          </svg>
         </div>
-        <div className="row_wrap grid-2">
-          <Autocomplete
-            onChange={(e, value) => changeSateCurrentHome(value)}
-            options={Object.keys(dataByState)}
-            renderInput={(params) => <TextField  {...params} label="State" />}
-          />
-          <Autocomplete
-            onChange={(e, value) => changeSateNewHome(value)}
-            options={Object.keys(dataByState)}
-            renderInput={(params) => <TextField  {...params} label="State" />}
-          />
-        </div>
-        <div className="row_wrap grid-2">
-          <FormControl>
-            <InputLabel>Home Size</InputLabel>
-            <OutlinedInput
-              type="number"
-              onWheel={(e) => e.target.blur()}
-
-              value={currentHomeFields.homeSize}
-              onChange={(e) => e.target.value.length <= 13 && setCurrentHomeFields({ ...currentHomeFields, homeSize: e.target.value })}
-              endAdornment={<InputAdornment position="end">sqft</InputAdornment>}
-              label="Home Size"
-            />
-          </FormControl>
-          <FormControl>
-            <InputLabel>Home Size</InputLabel>
-            <OutlinedInput
-              onWheel={(e) => e.target.blur()}
-              type="number"
-              value={newHomeFields.homeSize}
-              onChange={(e) => e.target.value.length <= 13 && setNewHomeFields({ ...newHomeFields, homeSize: e.target.value })}
-              endAdornment={<InputAdornment position="end">sqft</InputAdornment>}
-              label="Home Size"
-            />
-          </FormControl>
-        </div>
-        <div className="row_wrap grid-2">
-          <FormControl>
-            <InputLabel>Number of Residents</InputLabel>
-            <OutlinedInput
-              type="number"
-              onWheel={(e) => e.target.blur()}
-              value={currentHomeFields.numberResidents}
-              onChange={(e) => e.target.value.length <= 4 && setCurrentHomeFields({ ...currentHomeFields, numberResidents: e.target.value })}
-              label="Number of Residents"
-            />
-          </FormControl>
-          <FormControl>
-            <InputLabel>Number of Residents</InputLabel>
-            <OutlinedInput
-              type="number"
-              onWheel={(e) => e.target.blur()}
-              value={newHomeFields.numberResidents}
-              onChange={(e) => e.target.value.length <= 4 && setNewHomeFields({ ...newHomeFields, numberResidents: e.target.value })}
-              label="Number of Residents"
-            />
-          </FormControl>
-        </div>
-
-        {totalData?.new && totalData?.current &&
-          totalData?.totalText &&
-          Object.values(totalData.new).every(x => !!x) &&
-          Object.values(totalData.current).every(x => !!x) &&
-          <>
-            <h3>Find out how your electricity bill will be impacted by moving</h3>
-            <div className="row_inner total_block">
-              <div className="row_wrap grid-2">
-                <div className="total_inner">
-                  <div className="total_block_item">
-                    <p>Estimated Monthly Electricity Consumption <br /> in Current Home:</p>
-                    <span>{totalData.current.monthlyConsumption} kWh</span>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Estimated Monthly Electricity Cost <br /> in Current Home:</p>
-                    <span>${totalData.current.estimatedMonthlyCost}</span>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Estimated Yearly Electricity Cost <br /> in Current Home:</p>
-                    <span>${totalData.current.estimatedYearlyCost}</span>
-                  </div>
-                </div>
-                <div className="total_inner">
-                  <div className="total_block_item">
-                    <p>Estimated Monthly Electricity Consumption <br /> in Future Home:</p>
-                    <span>{totalData.new.monthlyConsumption} kWh</span>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Estimated Monthly Electricity Cost <br /> in Future Home:</p>
-                    <span>${totalData.new.estimatedMonthlyCost}</span>
-                  </div>
-                  <div className="total_block_item">
-                    <p>Estimated Yearly Electricity Cost <br /> in Future Home:</p>
-                    <span>${totalData.new.estimatedYearlyCost}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <p className="total_text">{totalData.totalText}</p>
-          </>}
       </div>
-    </div >)
+      <div className="calculator_content">
+        <div className="input_wrap">
+          <label>Billed Amount:</label>
+          <div className="input_item start">
+            <input
+              type="number"
+              onWheel={(e) => e.target.blur()}
+              value={values.billedAmount}
+              onChange={(e) => e.target.value.length <= 6 && setValues({ ...values, billedAmount: e.target.value })}
+            />
+            <span>$</span>
+          </div>
+        </div>
+        <div className="input_wrap">
+          <label>Desired Tip Percentage:</label >
+          <div className="input_item end">
+            <input
+              type="number"
+              onWheel={(e) => e.target.blur()}
+              value={values.desiredTip}
+              onChange={(e) => e.target.value.length <= 2 && setValues({ ...values, desiredTip: e.target.value })}
+            />
+            <span>%</span>
+          </div>
+        </div>
+        <div className="input_wrap">
+          <label>Number of Movers:</label >
+          <input
+            type="number"
+            onWheel={(e) => e.target.blur()}
+            value={values.numberOfMovers}
+            onChange={(e) => e.target.value.length <= 2 && setValues({ ...values, numberOfMovers: e.target.value })}
+          />
+        </div>
+      </div>
+      {!!totalData?.tipAmount &&
+        !!totalData?.tipPerMover &&
+        !!totalData?.totalBill &&
+        <div className="calculator_result">
+          <div className="result_item">
+            <span className="result_item_label">Tip Amount:</span>
+            <span className="result_item_value">${totalData.tipAmount}</span>
+          </div>
+          <div className="result_item">
+            <span className="result_item_label">Tip per Mover:</span>
+            <span className="result_item_value">${totalData.tipPerMover}</span>
+          </div>
+          <div className="result_item">
+            <span className="result_item_label">Total Bill:</span>
+            <span className="result_item_value">${totalData.totalBill}</span>
+          </div>
+        </div>}
+    </div >
+  )
 }
