@@ -79,7 +79,7 @@ export default function CalcItem() {
           payment: payment.toFixed(2),
           interest: prettify(interest.toFixed(2)),
           principal: prettify(principal.toFixed(2)),
-          balance: prettify(balance.toFixed(2))
+          balance: prettify(Math.abs(balance).toFixed(2))
         });
       }
 
