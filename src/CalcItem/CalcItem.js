@@ -5,7 +5,8 @@ import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import FormHelperText from '@mui/material/FormHelperText';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -36,34 +37,44 @@ export default function CalcItem() {
 
   const prettify = (str) => str.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1,");
 
+  const PMT = (rate, nper, pv, fv, type) => {
+    let pmt, pvif;
+
+    fv || (fv = 0);
+    type || (type = 0);
+
+    if (rate === 0)
+      return -(pv + fv) / nper;
+
+    pvif = Math.pow(1 + rate, nper);
+    pmt = - rate * (pv * pvif + fv) / (pvif - 1);
+
+    if (type === 1)
+      pmt /= (1 + rate);
+    return pmt;
+  }
+
   useEffect(() => {
     if (Object.values(formData).every(x => !!x)) {
       const { loanAmount, annualInterestRate, amortizationPeriod, numberOfRegularPayments, beginDate } = formData;
 
-      const loanAmountNum = loanAmount;
-      const annualInterestRateNum = annualInterestRate / 100;
-      const amortizationPeriodNum = amortizationPeriod;
-      const numberOfRegularPaymentsNum = numberOfRegularPayments;
+      const annualInterestRateNum = annualInterestRate / 100 / 12;
+      const amortizationPeriodMonths = amortizationPeriod * 12;
 
-      const monthlyInterestRate = annualInterestRateNum / 12;
-      const x = Math.pow(1 + monthlyInterestRate, numberOfRegularPaymentsNum);
-      const monthlyPaymentNum = (loanAmountNum * x * monthlyInterestRate) / (x - 1);
-      const totalPaymentsNum = monthlyPaymentNum * numberOfRegularPaymentsNum;
-      const totalInterestPaidNum = totalPaymentsNum - loanAmountNum;
+      const monthlyPaymentNum = PMT(annualInterestRateNum, amortizationPeriodMonths, -loanAmount, 0, 0);
 
       const schedule = [];
-      let balance = loanAmountNum;
+      let balance = Number(loanAmount);
 
-      for (let i = 1; i <= amortizationPeriodNum; i++) {
-        const interest = balance * monthlyInterestRate;
-        const payment = i === amortizationPeriodNum ? balance + interest : monthlyPaymentNum;
-        const principal = payment - interest;
+      for (let i = 1; i <= Number(numberOfRegularPayments); i++) {
+        const interest = balance * annualInterestRateNum;
+        const payment = i === Number(numberOfRegularPayments) ? balance + interest : monthlyPaymentNum;
+        const principal = payment.toFixed(2) - interest.toFixed(2);
         balance -= principal;
 
         const date = new Date(beginDate);
         date.setMonth(date.getMonth() + i);
         schedule.push({
-          month: i,
           date: date.toLocaleDateString('en-US'),
           payment: payment.toFixed(2),
           interest: prettify(interest.toFixed(2)),
@@ -72,7 +83,11 @@ export default function CalcItem() {
         });
       }
 
+      const totalPaymentsNum = schedule.reduce((acc, item) => Number(acc) + Number(item.payment), 0);
+      const totalInterestPaidNum = totalPaymentsNum - loanAmount;
+
       setOutputData({
+        monthlyPayment: prettify(monthlyPaymentNum.toFixed(2)),
         balloonPayment: prettify(schedule[schedule.length - 1].payment),
         totalPayments: prettify((totalPaymentsNum).toFixed(2)),
         totalInterestPaid: prettify(totalInterestPaidNum.toFixed(2))
@@ -83,8 +98,6 @@ export default function CalcItem() {
       setOutputData({})
     }
   }, [formData]);
-
-  console.log(formData)
 
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
@@ -123,12 +136,13 @@ export default function CalcItem() {
                 onWheel={(e) => e.target.blur()}
                 value={formData.amortizationPeriod}
                 onChange={(e) => {
-                  e.target.value <= 120 && e.target.value.length <= 3 && setFormData({ ...formData, amortizationPeriod: e.target.value })
+                  e.target.value <= 15 && e.target.value.length <= 2 && setFormData({ ...formData, amortizationPeriod: e.target.value })
                   formData.numberOfRegularPayments > e.target.value && setFormData({ ...formData, numberOfRegularPayments: "" })
                 }}
                 label="Amortization Period"
-                endAdornment={<InputAdornment position="end">months</InputAdornment>}
+                endAdornment={<InputAdornment position="end">years</InputAdornment>}
               />
+              <FormHelperText >max 10 years</FormHelperText>
             </FormControl>
             <FormControl>
               <InputLabel># of Regular Payments</InputLabel>
@@ -136,15 +150,19 @@ export default function CalcItem() {
                 type="number"
                 onWheel={(e) => e.target.blur()}
                 value={formData.numberOfRegularPayments}
-                onChange={(e) => e.target.value <= 120 && e.target.value.length <= 3 && e.target.value <= formData.amortizationPeriod && setFormData({ ...formData, numberOfRegularPayments: e.target.value })}
+                onChange={(e) => e.target.value.length <= 3 && e.target.value <= (formData.amortizationPeriod * 12) && setFormData({ ...formData, numberOfRegularPayments: e.target.value })}
                 label="# of Regular Payments"
-                endAdornment={<InputAdornment position="end">max {formData.amortizationPeriod}</InputAdornment>}
-
               />
+              <FormHelperText>{formData.amortizationPeriod ? `max ${formData.amortizationPeriod * 12} payments` : "max 12 payments in year"}</FormHelperText>
             </FormControl>
           </div>
           <div className="row_wrap grid-2">
-            <DatePicker value={formData.beginDate} onChange={(e) => setFormData({ ...formData, beginDate: e })} />
+            <MobileDatePicker
+              label="Start Date"
+              disablePast
+              value={formData.beginDate}
+              onChange={(e) => setFormData({ ...formData, beginDate: e })}
+            />
             <div className="reset_wrap">
               <button onClick={() => setFormData({
                 loanAmount: '',
@@ -160,6 +178,10 @@ export default function CalcItem() {
             <div className="table_wrap">
               <h2>Summary</h2>
               <div className="row_inner total_block total_inner">
+                <div className="total_block_item">
+                  <p>Monthly Payment:</p>
+                  <span>${outputData.monthlyPayment}</span>
+                </div>
                 <div className="total_block_item">
                   <p>Balloon Payment:</p>
                   <span>${outputData.balloonPayment}</span>
@@ -182,8 +204,7 @@ export default function CalcItem() {
                 <Table stickyHeader sx={{ minWidth: 500 }} aria-label="simple table">
                   <TableHead>
                     <TableRow>
-                      <TableCell align="left">Month</TableCell>
-                      <TableCell align="center">Date</TableCell>
+                      <TableCell align="left">Date</TableCell>
                       <TableCell align="center">Payment</TableCell>
                       <TableCell align="center">Interest</TableCell>
                       <TableCell align="center">Principal</TableCell>
@@ -193,12 +214,11 @@ export default function CalcItem() {
                   <TableBody>
                     {amortizationSchedule.map((row) => (
                       <TableRow key={row.month}>
-                        <TableCell component="th" scope="row">{row.month}</TableCell>
-                        <TableCell align="center">{row.date}</TableCell>
-                        <TableCell align="center">{row.payment}</TableCell>
-                        <TableCell align="center">{row.interest}</TableCell>
-                        <TableCell align="center">{row.principal}</TableCell>
-                        <TableCell align="right">{row.balance}</TableCell>
+                        <TableCell align="left">{row.date}</TableCell>
+                        <TableCell align="center">${prettify(row.payment)}</TableCell>
+                        <TableCell align="center">${row.interest}</TableCell>
+                        <TableCell align="center">${row.principal}</TableCell>
+                        <TableCell align="right">${row.balance}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
