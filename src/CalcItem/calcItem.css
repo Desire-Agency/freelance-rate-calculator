@@ -71,6 +71,7 @@ input::-webkit-inner-spin-button {
   color: #758592;
   font-size: 32px;
   text-align: center;
+  font-weight: 400;
   margin-top: 72px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
@@ -83,6 +84,7 @@ input::-webkit-inner-spin-button {
   color: #758592;
   font-size: 32px;
   text-align: center;
+  font-weight: 400;
   margin-top: 72px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
