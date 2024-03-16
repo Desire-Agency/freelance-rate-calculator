@@ -100,10 +100,41 @@ const centsPerKWhByState = {
 };
 
 const listOfDevices = {
-  "Cooling And Heating": ["Central Air Conditioner", "Window Air Conditioner", "Furnace", "Heat Pump", "Portable Heater", "Ceiling Fans", "Electric Water Heater"],
-  "Appliances": ["Refrigerator", "Freezer", "Stove", "Oven", "Microwave Oven", "Dishwasher", "Clothes Washer", "Clothes Dryer", "Clothes iron", "Coffee Maker", "Toaster", "Blender", "Desktop Computer and Monitor", "Laptop Computer", "Printer", "Game Console", "Hair Dryer", "Home Security System"],
-  "Lighting": ["LED Bulbs", "Incandescent Bulbs"]
-};
+  "Cooling And Heating": {
+    "Central Air Conditioner": { watts: 3000 },
+    "Window Air Conditioner": { watts: 950 },
+    "Furnace": { watts: 20000 },
+    "Heat Pump": { watts: 15000 },
+    "Portable Heater": { watts: 1125 },
+    "Ceiling Fans": { watts: 120 },
+    "Electric Water Heater": { watts: 2000, fullTime: true }
+  },
+  "Appliances": {
+    "Refrigerator": { watts: 625, fullTime: true },
+    "Freezer": { watts: 600, fullTime: true },
+    "Stove": { watts: 3000 },
+    "Oven": { watts: 3500 },
+    "Microwave Oven": { watts: 925 },
+    "Dishwasher": { watts: 1800 },
+    "Clothes Washer": { watts: 425 },
+    "Clothes Dryer": { watts: 3400 },
+    "Clothes iron": { watts: 1400 },
+    "Television": { watts: 120 },
+    "Desktop Computer and Monitor": { watts: 270 },
+    "Laptop Computer": { watts: 50 },
+    "Printer": { watts: 45 },
+    "Game Console": { watts: 90 },
+    "Coffee Maker": { watts: 1050 },
+    "Toaster": { watts: 1100 },
+    "Blender": { watts: 650 },
+    "Hair Dryer": { watts: 1538 },
+    "Home Security System": { watts: 4, fullTime: true }
+  },
+  "Lighting": {
+    "LED Bulbs": { watts: 10 },
+    "Incandescent Bulbs": { watts: 70 },
+  }
+}
 
 const prettify = (str) => str === "NaN" ? "0" : Number(str).toFixed(0).replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, "$1,");
 
@@ -129,7 +160,7 @@ export default function CalcItem() {
   }, [menuRef]);
 
   const handleAddDevice = useCallback((category, device) => {
-    setCurrentData({ ...currentData, [category]: [...currentData[category], { title: device, numberOfUnits: null, averageHoursPerWeek: null }] });
+    setCurrentData({ ...currentData, [category]: [...currentData[category], { title: device, numberOfUnits: null, averageHoursPerWeek: listOfDevices[category][device].fullTime ? 168 : null, watts: listOfDevices[category][device].watts, fullTime: listOfDevices[category][device].fullTime }], });
     setMenus(Object.keys(listOfDevices).map((device) => ({ [device]: false })));
   }, [currentData]);
 
@@ -150,16 +181,17 @@ export default function CalcItem() {
     });
   }, [currentData]);
 
-  const calculateTotalMonthlyCost = useCallback(() => {
+  const calculateTotalMonthlyKWH = useCallback(() => {
     let totalKwh = 0;
+
     for (const category in currentData) {
       for (const device of currentData[category]) {
-        totalKwh += Number(device.averageHoursPerWeek) * 4.3;
+        totalKwh += (Number(device.numberOfUnits) * (Number(device.averageHoursPerWeek) * 4.3) * Number(device.watts)) / 1000;
       }
     }
 
-    return (totalKwh * centsPerKWhByState[selectedState]).toFixed(2);
-  }, [currentData, selectedState]);
+    return (totalKwh).toFixed(2);
+  }, [currentData]);
 
   const checkResultValues = useCallback(() => {
     let hasNonEmptyCategory = false;
@@ -212,7 +244,7 @@ export default function CalcItem() {
                 </button>
                 {menus[category] &&
                   <ul className="list-group-list" ref={menuRef}>
-                    {listOfDevices[category].map((device) => {
+                    {Object.keys(listOfDevices[category]).map((device) => {
                       const selected = currentData[category]?.find((dev) => dev.title === device);
                       return (<li
                         key={device}
@@ -231,59 +263,56 @@ export default function CalcItem() {
             </div>
             {!!currentData[category]?.length &&
               <div className="list-group-content">
-                {listOfDevices[category].map((device) => (
-                  currentData[category].find((dev) => dev.title === device) && (
-                    <div key={device} className="list-group-content-item">
-                      <div className="list-group-content-item-form">
-                        <div>
-                          <button className="list-group-content-item-remove" onClick={() => handleRemoveDevice(category, device)}>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                              <path d="M10 0C15.53 0 20 4.47 20 10C20 15.53 15.53 20 10 20C4.47 20 0 15.53 0 10C0 4.47 4.47 0 10 0ZM13.59 5L10 8.59L6.41 5L5 6.41L8.59 10L5 13.59L6.41 15L10 11.41L13.59 15L15 13.59L11.41 10L15 6.41L13.59 5Z" fill="#758592" />
-                            </svg>
-                          </button>
-                          <span className="list-group-content-item-title">{device}</span>
-                        </div>
-                        <div>
-                          <CssTextField
-                            label="Number of Units"
-                            type="number"
-                            value={currentData[category].find((dev) => dev.title === device).numberOfUnits}
-                            onChange={(e) =>
-                              /^[0-9]{0,2}$/.test(e.target.value) &&
-                              (e.target.value >= 0 || e.target.value === "") &&
-                              handleInputChange(
-                                category,
-                                device,
-                                "numberOfUnits",
-                                e.target.value
-                              )
-                            }
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                          <CssTextField
-                            type="number"
-                            label="Average Hours Per Week"
-                            value={currentData[category].find((dev) => dev.title === device).averageHoursPerWeek}
-                            onChange={(e) =>
-                              /^[0-9]{0,3}$/.test(e.target.value) &&
-                              (e.target.value >= 0 || e.target.value === "") &&
-                              handleInputChange(
-                                category,
-                                device,
-                                "averageHoursPerWeek",
-                                e.target.value
-                              )
-                            }
-                            InputLabelProps={{
-                              shrink: true,
-                            }}
-                          />
-                        </div>
+                {currentData[category].map((device) => (
+                  <div key={device} className="list-group-content-item">
+                    <div className="list-group-content-item-form">
+                      <div>
+                        <button className="list-group-content-item-remove" onClick={() => handleRemoveDevice(category, device.title)}>
+                          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 0C15.53 0 20 4.47 20 10C20 15.53 15.53 20 10 20C4.47 20 0 15.53 0 10C0 4.47 4.47 0 10 0ZM13.59 5L10 8.59L6.41 5L5 6.41L8.59 10L5 13.59L6.41 15L10 11.41L13.59 15L15 13.59L11.41 10L15 6.41L13.59 5Z" fill="#758592" />
+                          </svg>
+                        </button>
+                        <span className="list-group-content-item-title">{device.title}</span>
+                      </div>
+                      <div>
+                        <CssTextField
+                          label="Number of Units"
+                          type="number"
+                          value={device.numberOfUnits}
+                          onChange={(e) =>
+                            /^[0-9]{0,3}$/.test(e.target.value) &&
+                            (e.target.value >= 0 || e.target.value === "") &&
+                            handleInputChange(
+                              category,
+                              device.title,
+                              "numberOfUnits",
+                              e.target.value
+                            )
+                          }
+                          InputLabelProps={{ shrink: true }}
+                        />
+                        <CssTextField
+                          type="number"
+                          label="Average Hours Per Week"
+                          value={device.averageHoursPerWeek}
+                          onChange={!device?.fullTime ? (e) =>
+                            /^[0-9]{0,3}$/.test(e.target.value) &&
+                            e.target.value <= 168 &&
+                            (e.target.value >= 0 || e.target.value === "") &&
+                            handleInputChange(
+                              category,
+                              device.title,
+                              "averageHoursPerWeek",
+                              e.target.value
+                            ) : null}
+                          InputLabelProps={{ shrink: true }}
+                          InputProps={{ readOnly: device?.fullTime }}
+                          className={device?.fullTime ? "full-time" : ""}
+                        />
                       </div>
                     </div>
-                  )))}
+                  </div>
+                ))}
               </div>}
           </div>
         ))}
@@ -293,11 +322,11 @@ export default function CalcItem() {
             <div className="result-section">
               <div className="result-section-item">
                 <span>Estimated Total Monthly kwH</span>
-                <div className="result-section-value">{prettify(calculateTotalMonthlyCost())}</div>
+                <div className="result-section-value">{prettify(calculateTotalMonthlyKWH())}</div>
               </div>
               <div className="result-section-item">
                 <span>Estimated Energy Price</span>
-                <div className="result-section-value">${prettify(calculateTotalMonthlyCost() * centsPerKWhByState[selectedState])}</div>
+                <div className="result-section-value">${prettify(calculateTotalMonthlyKWH() * centsPerKWhByState[selectedState])}</div>
               </div>
             </div>
             <button className="button-reset" onClick={handleReset}>
