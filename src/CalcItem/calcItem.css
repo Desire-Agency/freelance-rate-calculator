@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 .calculator input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -37,18 +39,18 @@ input::-webkit-inner-spin-button {
   width: calc(100% - 30px);
   max-width: 780px;
   height: 100%;
-  margin: 100px auto;
+  margin: 300px auto;
   line-height: 1.2;
-  font-family: "din next" "sans-serif", "arial";
+  font-family: "Kanit", "sans-serif", "arial";
 }
 
 .calculator h1 {
   width: 100%;
   padding-bottom: 32px;
   color: #4ba7c3;
-  font-size: 42px;
+  font-size: 40px;
   text-align: center;
-  font-weight: 800;
+  font-weight: 600;
   position: relative;
   text-transform: uppercase;
 }
@@ -71,10 +73,11 @@ input::-webkit-inner-spin-button {
   color: #758592;
   font-size: 32px;
   text-align: center;
-  font-weight: 400;
+  font-weight: 300;
   margin-top: 72px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
+  font-family: "DIN Next LT Pro" "sans-serif", "arial";
 }
 
 .calculator h3 {
@@ -84,15 +87,16 @@ input::-webkit-inner-spin-button {
   color: #758592;
   font-size: 32px;
   text-align: center;
-  font-weight: 400;
+  font-weight: 300;
   margin-top: 72px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
+  font-family: "DIN Next LT Pro" "sans-serif", "arial";
 }
 
-.calculator .list-group-title {
+.calculator h4 {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 500;
 }
 
 .calculator .MuiIconButton-root {
@@ -142,7 +146,7 @@ input::-webkit-inner-spin-button {
   text-transform: uppercase;
   font-size: 14px;
   line-height: 125%;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -179,6 +183,9 @@ input::-webkit-inner-spin-button {
   list-style: none;
   text-align: center;
   position: relative;
+  font-family: "DIN Next LT Pro" "sans-serif", "arial";
+  font-size: 20px;
+  font-weight: 400;
 }
 
 .calculator .list-group-list li:hover {
@@ -251,6 +258,8 @@ input::-webkit-inner-spin-button {
 .calculator .list-group-content-item-title {
   color: #000;
   font-size: 20px;
+  font-weight: 400;
+  font-family: "DIN Next LT Pro" "sans-serif", "arial";
 }
 
 .calculator .button-calculate {
@@ -261,6 +270,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   justify-content: space-between;
   gap: 30px;
+  font-weight: 500;
   padding: 12px 15px 12px 40px;
   font-size: 14px;
   line-height: 125%;
@@ -289,16 +299,17 @@ input::-webkit-inner-spin-button {
   gap: 20px;
   width: calc(50% - 12px);
 }
+
 .calculator .result-section-item span {
   color: #000;
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .calculator .result-section-value {
   color: #616d73;
   font-size: 42px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   padding: 30px;
   background: #fff;
@@ -309,7 +320,7 @@ input::-webkit-inner-spin-button {
 .calculator .button-reset {
   color: #494737;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 500;
   text-transform: uppercase;
   gap: 8px;
   cursor: pointer;
@@ -412,7 +423,7 @@ input::-webkit-inner-spin-button {
     margin-top: 22px;
   }
 
-  .calculator .list-group-title {
+  .calculator h4 {
     font-size: 16px;
   }
 
