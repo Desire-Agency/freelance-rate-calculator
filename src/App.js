@@ -1,8 +1,8 @@
-import MoveCalcItem from './MoveCalcItem/MoveCalcItem';
+import CalcItem from './CalcItem/CalcItem';
 
 function App() {
   return (
-    <MoveCalcItem />
+    <CalcItem />
   );
 }
 
