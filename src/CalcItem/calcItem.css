@@ -71,7 +71,7 @@ input::-webkit-inner-spin-button {
   bottom: 0;
   width: 78px;
   height: 2px;
-  background-color: #f5a800;
+  background-color: #F5A800;
   left: 50%;
   transform: translate(-50%, 0%);
 }
@@ -167,11 +167,11 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .list-group-button button:hover {
-  color: #f5a800;
+  color: #F5A800;
 }
 
 .calculator .list-group-button button:hover path {
-  fill: #f5a800;
+  fill: #F5A800;
 }
 
 .calculator .list-group-list {
@@ -280,7 +280,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .list-group-content-item-remove:hover path {
-  fill: #f5a800;
+  fill: #F5A800;
 }
 
 .calculator .list-group-content-item-title {
@@ -306,10 +306,11 @@ input::-webkit-inner-spin-button {
   cursor: pointer;
   margin: 0 auto;
   margin-top: 48px;
+  font-family: "Kanit", "sans-serif", "arial";
 }
 
 .calculator .button-calculate:hover {
-  background: #f5a800;
+  background: #F5A800;
 }
 
 .calculator .result-section {
@@ -361,7 +362,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .button-reset:hover {
-  color: #f5a800;
+  color: #F5A800;
 }
 
 .calculator .button-reset path {
@@ -369,7 +370,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .button-reset:hover path {
-  fill: #f5a800;
+  fill: #F5A800;
 }
 
 @media screen and (max-width: 768px) {
