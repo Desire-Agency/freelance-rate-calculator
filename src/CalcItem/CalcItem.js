@@ -179,7 +179,6 @@ export default function CalcItem() {
     return hasNonEmptyCategory;
   }, [currentData])
 
-
   return (
     <div className="calculator">
       <h1>Total Energy Use Calculator</h1>
