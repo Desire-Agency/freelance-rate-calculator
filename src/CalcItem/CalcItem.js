@@ -132,7 +132,7 @@ const listOfDevices = {
   },
   "Lighting": {
     "LED Bulbs": { watts: 10 },
-    "Incandescent Bulbs": { watts: 70 },
+    "Incandescent Bulbs": { watts: 70 }
   }
 }
 
@@ -144,7 +144,6 @@ export default function CalcItem() {
   const [selectedState, setSelectedState] = useState(null);
   const [menus, setMenus] = useState(Object.keys(listOfDevices).map((device) => ({ [device]: false })));
   const [currentData, setCurrentData] = useState(Object.keys(listOfDevices).reduce((acc, key) => ({ ...acc, [key]: [] }), {}))
-
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
@@ -160,7 +159,7 @@ export default function CalcItem() {
   }, [menuRef]);
 
   const handleAddDevice = useCallback((category, device) => {
-    setCurrentData({ ...currentData, [category]: [...currentData[category], { title: device, numberOfUnits: null, averageHoursPerWeek: listOfDevices[category][device].fullTime ? 168 : null, watts: listOfDevices[category][device].watts, fullTime: listOfDevices[category][device].fullTime }], });
+    setCurrentData({ ...currentData, [category]: [...currentData[category], { title: device, numberOfUnits: null, averageHoursPerWeek: listOfDevices[category][device].fullTime ? 168 : null, watts: listOfDevices[category][device].watts, fullTime: listOfDevices[category][device].fullTime }] });
     setMenus(Object.keys(listOfDevices).map((device) => ({ [device]: false })));
   }, [currentData]);
 
@@ -169,17 +168,9 @@ export default function CalcItem() {
     setShowResult(false);
   }, []);
 
-  const handleRemoveDevice = useCallback((category, device) => {
-    setCurrentData({ ...currentData, [category]: currentData[category].filter((dev) => dev.title !== device) });
-  }, [currentData]);
+  const handleRemoveDevice = useCallback((category, device) => setCurrentData({ ...currentData, [category]: currentData[category].filter((dev) => dev.title !== device) }), [currentData]);
 
-  const handleInputChange = useCallback((category, device, field, value) => {
-    setCurrentData({
-      ...currentData, [category]: currentData[category].map((dev) =>
-        dev.title === device ? { ...dev, [field]: value } : dev
-      )
-    });
-  }, [currentData]);
+  const handleInputChange = useCallback((category, device, field, value) => setCurrentData({ ...currentData, [category]: currentData[category].map((dev) => dev.title === device ? { ...dev, [field]: value } : dev) }), [currentData]);
 
   const calculateTotalMonthlyKWH = useCallback(() => {
     let totalKwh = 0;

@@ -1,5 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
+@font-face {
+  font-family: "DINNextLTPro";
+  src: url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.eot");
+  src: url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.eot?#iefix")
+      format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.woff2")
+      format("woff2"),
+    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.woff")
+      format("woff"),
+    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.ttf")
+      format("truetype"),
+    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.svg#DIN Next Rounded LT Pro Light")
+      format("svg");
+  font-weight: 300;
+}
+
 .calculator input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -26,7 +42,7 @@ input::-webkit-inner-spin-button {
 .calculator .MuiOutlinedInput-root,
 .calculator .MuiFormLabel-root {
   color: #000;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
+  font-family: "DINNextLTPro", "sans-serif", "arial";
 }
 
 .MuiAutocomplete-popper li {
@@ -47,7 +63,7 @@ input::-webkit-inner-spin-button {
   align-items: center;
   flex-direction: column;
   width: calc(100% - 30px);
-  max-width: 780px;
+  max-width: 790px;
   height: 100%;
   margin: 100px auto 300px;
   line-height: 1.2;
@@ -63,6 +79,7 @@ input::-webkit-inner-spin-button {
   font-weight: 600;
   position: relative;
   text-transform: uppercase;
+  letter-spacing: -1px;
 }
 
 .calculator h1:after {
@@ -71,7 +88,7 @@ input::-webkit-inner-spin-button {
   bottom: 0;
   width: 78px;
   height: 2px;
-  background-color: #F5A800;
+  background-color: #f5a800;
   left: 50%;
   transform: translate(-50%, 0%);
 }
@@ -79,15 +96,15 @@ input::-webkit-inner-spin-button {
 .calculator h2 {
   width: 100%;
   padding-bottom: 32px;
-  margin-bottom: 32px;
+  margin-bottom: 26px;
   color: #758592;
   font-size: 32px;
   text-align: center;
   font-weight: 300;
-  margin-top: 72px;
+  margin-top: 66px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
+  font-family: "DINNextLTPro", "sans-serif", "arial";
 }
 
 .calculator h3 {
@@ -101,7 +118,7 @@ input::-webkit-inner-spin-button {
   margin-top: 72px;
   border-bottom: 1px solid #d2d3d4;
   font-style: italic;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
+  font-family: "DINNextLTPro", "sans-serif", "arial";
 }
 
 .calculator h4 {
@@ -167,11 +184,11 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .list-group-button button:hover {
-  color: #F5A800;
+  color: #f5a800;
 }
 
 .calculator .list-group-button button:hover path {
-  fill: #F5A800;
+  fill: #f5a800;
 }
 
 .calculator .list-group-list {
@@ -194,9 +211,9 @@ input::-webkit-inner-spin-button {
   list-style: none;
   text-align: center;
   position: relative;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
+  font-family: "DINNextLTPro", "sans-serif", "arial";
   font-size: 20px;
-  font-weight: 400;
+  font-weight: 300;
 }
 
 .calculator .list-group-list li:hover {
@@ -261,8 +278,8 @@ input::-webkit-inner-spin-button {
   position: absolute;
   content: "This unit operates 24 hours a day";
   font-size: 10px;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
-  font-weight: 400;
+  font-family: "DINNextLTPro", "sans-serif", "arial";
+  font-weight: 300;
   display: block;
   top: 60px;
   text-align: start;
@@ -280,14 +297,14 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .list-group-content-item-remove:hover path {
-  fill: #F5A800;
+  fill: #f5a800;
 }
 
 .calculator .list-group-content-item-title {
   color: #000;
   font-size: 20px;
-  font-weight: 400;
-  font-family: "DIN Next LT Pro", "sans-serif", "arial";
+  font-weight: 300;
+  font-family: "DINNextLTPro", "sans-serif", "arial";
 }
 
 .calculator .button-calculate {
@@ -310,7 +327,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .button-calculate:hover {
-  background: #F5A800;
+  background: #f5a800;
 }
 
 .calculator .result-section {
@@ -362,7 +379,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .button-reset:hover {
-  color: #F5A800;
+  color: #f5a800;
 }
 
 .calculator .button-reset path {
@@ -370,7 +387,7 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .button-reset:hover path {
-  fill: #F5A800;
+  fill: #f5a800;
 }
 
 @media screen and (max-width: 768px) {
