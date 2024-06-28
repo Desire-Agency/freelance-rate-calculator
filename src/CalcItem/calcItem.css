@@ -1,19 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
 
-@font-face {
-  font-family: "DINNextLTPro";
-  src: url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.eot");
-  src: url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.eot?#iefix")
-      format("embedded-opentype"),
-    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.woff2")
-      format("woff2"),
-    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.woff")
-      format("woff"),
-    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.ttf")
-      format("truetype"),
-    url("https://db.onlinewebfonts.com/t/8089d3cfb09b48b3e41555be1c9dc537.svg#DIN Next Rounded LT Pro Light")
-      format("svg");
-  font-weight: 300;
+* {
+  font-family: "Roboto", "sans-serif", "arial";
+  box-sizing: border-box;
+  font-style: normal;
+}
+
+.calculator {
+  width: 100%;
+  max-width: 540px;
+  padding: 0 15px;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .calculator input::-webkit-outer-spin-button,
@@ -26,472 +26,340 @@ input::-webkit-inner-spin-button {
   -moz-appearance: textfield;
 }
 
-.calculator .MuiOutlinedInput-root {
-  background: #fff;
-}
-
-.calculator button {
-  background: transparent;
-  border: none;
-}
-
-.calculator .MuiOutlinedInput-root .MuiAutocomplete-endAdornment {
-  right: 26px;
-}
-
-.calculator .MuiOutlinedInput-root,
-.calculator .MuiFormLabel-root {
-  color: #000;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-}
-
-.MuiAutocomplete-popper li {
-  text-align: center !important;
-  font-family: "Kanit", "sans-serif", "arial";
-  font-size: 20px;
-  font-weight: 400;
-  background: transparent !important;
-}
-
-.MuiAutocomplete-popper li:hover {
-  background: #f5a70039 !important;
-}
-
-.calculator {
+.container {
+  width: 100%;
+  max-width: 476px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
-  width: calc(100% - 30px);
-  max-width: 790px;
-  height: 100%;
-  margin: 100px auto 300px;
-  line-height: 1.2;
-  font-family: "Kanit", "sans-serif", "arial";
+  align-items: start;
 }
 
-.calculator h1 {
-  width: 100%;
-  padding-bottom: 32px;
-  color: #4ba7c3;
-  font-size: 40px;
-  text-align: center;
-  font-weight: 600;
-  position: relative;
-  text-transform: uppercase;
-  letter-spacing: -1px;
+.calculator .title-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.calculator h1:after {
-  position: absolute;
-  content: "";
-  bottom: 0;
-  width: 78px;
-  height: 2px;
-  background-color: #f5a800;
-  left: 50%;
-  transform: translate(-50%, 0%);
+.calculator .title-block-text {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 8px;
 }
 
-.calculator h2 {
-  width: 100%;
-  padding-bottom: 32px;
-  margin-bottom: 26px;
-  color: #758592;
-  font-size: 32px;
-  text-align: center;
-  font-weight: 300;
-  margin-top: 66px;
-  border-bottom: 1px solid #d2d3d4;
-  font-style: italic;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-}
-
-.calculator h3 {
-  width: 100%;
-  padding-bottom: 32px;
-  margin-bottom: 32px;
-  color: #758592;
-  font-size: 32px;
-  text-align: center;
-  font-weight: 300;
-  margin-top: 72px;
-  border-bottom: 1px solid #d2d3d4;
-  font-style: italic;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-}
-
-.calculator h4 {
-  font-size: 24px;
+.calculator .title-block-text-top {
   font-weight: 500;
+  font-size: 35px;
+  line-height: 41px;
+  color: #003f82;
 }
 
-.calculator .MuiIconButton-root {
-  right: 30px;
+.calculator .title-block-text-bottom {
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 38px;
+  color: #ffffff;
+  background-color: #003f82;
+  padding: 0 16px;
+  border-radius: 12px;
+  display: block;
 }
 
-.calculator .MuiAutocomplete-root {
+.calculator .tagline-bg {
+  color: #003f82;
+  padding: 14px 22px;
+  background-color: #f8f9fd;
+  margin-bottom: 23px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #003f82;
+  border-radius: 12px;
+}
+
+.calculator .input-block {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0 22px;
+  margin-bottom: 24px;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #003f82;
   width: 100%;
 }
 
-.calculator .content {
-  width: 100%;
+.calculator .input-block input {
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  background: #f8f9fd;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 19px;
+  color: #003f82;
 }
 
-.calculator .list-group-item {
+.calculator .input-block input.error {
+  border: 1px solid rgba(253, 44, 44, 0.775);
+}
+
+.calculator .checkbox-block {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.calculator .checkbox-item {
   width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 18px 32px;
-  gap: 20px;
-  border: 1px solid #d2d3d4;
+  padding: 6px 22px;
+  gap: 10px;
+  justify-content: space-between;
+  border-bottom: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.calculator .checkbox-item:hover {
+  background-color: #003f820c;
+}
+
+.calculator .checkbox-item svg {
+  width: 34px;
+  height: auto;
+  min-height: 22px;
+  max-height: 24px;
+}
+
+.calculator .checkbox-item-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.calculator .checkbox-item-title span {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: #003f82;
+}
+
+.calculator .checkbox-item-switcher {
+  display: flex;
+  width: 88px;
+  height: 28px;
+  background-color: #edf0fa;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.calculator .checkbox-item-switcher span {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: center;
+  color: #abc0d6;
+  width: 44px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator .checkbox-item-switcher span.act {
+  background-color: #ff8400;
+  color: #ffffff;
+}
+
+.calculator .calculate-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #3c80df;
+  margin: 0 auto;
+  padding: 14px 30px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 16px;
+  text-align: center;
+  color: #ffffff;
+  transition: 0.3s;
+  margin-bottom: 40px;
+  margin-top: 40px;
+}
+
+.calculator .calculate-button:hover {
+  background: #00b07a;
+}
+
+.calculator .logo-block {
+  width: 100%;
+  border-top: 1px solid #003f82;
+  padding-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calculator .result-block {
+  background: #f8f9fd;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  color: #003f82;
+  width: 100%;
+  padding: 32px 30px 20px;
+  margin-bottom: 14px;
+}
+
+.calculator .result-block p {
+  text-align: center;
+}
+
+.calculator .circular-progress {
+  display: inline-block;
+  position: relative;
+  width: 142px;
+  height: 142px;
+}
+
+.calculator .circular-progress-svg {
+  transform: rotate(0deg);
+  width: 100%;
+  height: 100%;
+}
+
+.calculator .circular-progress-bg {
+  fill: none;
+  stroke: #fff;
+  stroke-width: 3;
+}
+
+.calculator .circular-progress-bar {
+  fill: none;
+  stroke: #ff8400;
+  stroke-width: 3;
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.35s;
+}
+
+.calculator .circular-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 900;
+  font-size: 34px;
+  line-height: 40px;
+  color: #ff8400;
+}
+
+.calculator .description-block {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculator .description-item {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 30px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.calculator .description-item svg {
+  width: 54px;
+  min-width: 54px;
+  height: auto;
+  min-height: 54px;
+  max-height: 70px;
+  display: flex;
+}
+
+.calculator .description-item:last-child {
   border-bottom: none;
 }
 
-.calculator .list-group:nth-child(3) .list-group-item {
-  border-bottom: 1px solid #d2d3d4;
-}
-
-.calculator .list-group .list-group-content {
-  border-top: 1px solid #d2d3d4;
-}
-
-.calculator .list-group:nth-child(3) .list-group-content {
-  border-top: none;
-}
-
-.calculator .list-group-button {
-  position: relative;
-}
-
-.calculator .list-group-button button {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #494737;
-  text-transform: uppercase;
-  font-size: 14px;
-  line-height: 125%;
-  font-weight: 500;
-  cursor: pointer;
-  font-family: "Kanit", "sans-serif", "arial";
-  transition: all 0.3s;
-}
-
-.calculator .list-group-button button path {
-  transition: all 0.3s;
-}
-
-.calculator .list-group-button button:hover {
-  color: #f5a800;
-}
-
-.calculator .list-group-button button:hover path {
-  fill: #f5a800;
-}
-
-.calculator .list-group-list {
-  position: absolute;
-  top: 32px;
-  right: 0;
-  background: #fff;
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-  width: 300px;
+.calculator .description-item-text span {
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 23px;
+  color: #003f82;
+  margin-bottom: 4px;
   display: block;
-  z-index: 2;
-  max-height: 300px;
-  overflow: auto;
 }
 
-.calculator .list-group-list li {
-  padding: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  list-style: none;
-  text-align: center;
-  position: relative;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-  font-size: 20px;
-  font-weight: 300;
-}
-
-.calculator .list-group-list li:hover {
-  background: #f5a70039;
-}
-
-.calculator .list-group-list .selected {
-  pointer-events: none;
-  color: #b4bcc3;
-}
-
-.calculator .list-group-list li svg {
-  position: absolute;
-  top: 50%;
-  left: 17px;
-  transform: translate(0%, -50%);
-}
-
-.calculator .list-group-content {
-  background: #f3f3f3;
-}
-
-.calculator .list-group-content-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 28px 32px 28px 16px;
-  gap: 20px;
-}
-
-.calculator .list-group:last-child .list-group-content-item {
-  border-top: none;
-}
-
-.calculator .list-group-content-item-form {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.calculator .list-group-content-item-form > div {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.calculator .list-group-content-item-form > div > div {
-  max-width: 180px;
-  width: 100%;
-}
-
-.calculator .list-group-content-item-form .full-time {
-  opacity: 0.6;
-  pointer-events: none;
-  position: relative;
-}
-
-.calculator .list-group-content-item-form .full-time:after {
-  position: absolute;
-  content: "This unit operates 24 hours a day";
-  font-size: 10px;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-  font-weight: 300;
-  display: block;
-  top: 60px;
-  text-align: start;
-  left: 0;
-}
-
-.calculator .list-group-content-item-remove {
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-
-.calculator .list-group-content-item-remove path {
-  transition: all 0.3s;
-}
-
-.calculator .list-group-content-item-remove:hover path {
-  fill: #f5a800;
-}
-
-.calculator .list-group-content-item-title {
-  color: #000;
-  font-size: 20px;
-  font-weight: 300;
-  font-family: "DINNextLTPro", "sans-serif", "arial";
-}
-
-.calculator .button-calculate {
-  background: #f4bc54;
-  color: #494737;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  font-weight: 500;
-  padding: 12px 15px 12px 40px;
-  font-size: 14px;
-  line-height: 125%;
-  text-transform: uppercase;
-  cursor: pointer;
-  margin: 0 auto;
-  margin-top: 48px;
-  font-family: "Kanit", "sans-serif", "arial";
-}
-
-.calculator .button-calculate:hover {
-  background: #f5a800;
-}
-
-.calculator .result-section {
-  display: flex;
-  background: #f3f3f3;
-  padding: 40px 32px;
-  gap: 24px;
-  justify-content: space-between;
-}
-
-.calculator .result-section-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  width: calc(50% - 12px);
-}
-
-.calculator .result-section-item span {
-  color: #000;
-  font-size: 20px;
-  font-weight: 500;
-}
-
-.calculator .result-section-value {
-  color: #616d73;
-  font-size: 42px;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 30px;
-  background: #fff;
-  width: 100%;
-  text-align: center;
-}
-
-.calculator .button-reset {
-  color: #494737;
-  font-size: 14px;
-  font-weight: 500;
-  text-transform: uppercase;
-  gap: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-  margin-top: 30px;
-  transition: all 0.3s;
-  font-family: "Kanit", "sans-serif", "arial";
-}
-
-.calculator .button-reset:hover {
-  color: #f5a800;
-}
-
-.calculator .button-reset path {
-  transition: all 0.3s;
-}
-
-.calculator .button-reset:hover path {
-  fill: #f5a800;
+.calculator .description-item-text p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  color: #003f82;
 }
 
 @media screen and (max-width: 768px) {
-  .calculator .list-group-content-item-form {
+  .calculator .title-block {
     flex-direction: column;
-  }
-
-  .calculator .list-group-content-item-form > div {
+    align-items: center;
     width: 100%;
-    justify-content: start;
   }
 
-  .calculator .list-group-item {
-    padding: 16px;
+  .calculator .title-block-text-top {
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 32px;
   }
 
-  .calculator .list-group-content-item {
-    padding: 20px 16px;
+  .calculator .title-block-text {
+    align-items: center;
   }
 
-  .calculator .list-group-content-item-title {
-    font-size: 16px;
+  .calculator .checkbox-item {
+    padding: 6px 14px;
   }
 
-  .calculator .list-group-content-item-form > div > div {
-    max-width: calc(50% - 7px);
-  }
-
-  .calculator .list-group-button button {
-    font-size: 12px;
-    gap: 6px;
-  }
-
-  .calculator .list-group-button button svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .calculator .list-group-list li {
-    padding: 10px;
-  }
-
-  .calculator .result-section {
-    padding: 16px;
-    gap: 20px;
-    flex-direction: column;
-  }
-
-  .calculator .result-section-item {
-    width: 100%;
+  .calculator .description-item {
     gap: 10px;
+    padding: 14px;
+    flex-direction: column;
   }
 
-  .calculator .result-section-value {
-    font-size: 22px;
-    padding: 16px;
+  .calculator .description-item-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .calculator .result-section-item span {
-    font-size: 16px;
+  .calculator .description-item svg {
+    width: 34px;
+    min-width: 34px;
+    min-height: 30px;
+    max-height: 40px;
+  }
+  .calculator .description-item-text p {
+    text-align: center;
   }
 
-  .calculator .button-reset {
-    margin-top: 20px;
-  }
-
-  .calculator h1 {
-    padding-bottom: 10px;
-    font-size: 22px;
-  }
-
-  .calculator h2 {
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-size: 18px;
-    margin-top: 22px;
-  }
-
-  .calculator h3 {
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    font-size: 16px;
-    margin-top: 22px;
-  }
-
-  .calculator h4 {
-    font-size: 16px;
-  }
-
-  .calculator .MuiInputBase-input {
-    padding: 10px;
-  }
-
-  .calculator .button-calculate {
-    margin-top: 20px;
-  }
-
-  .calculator .list-group-content-item-form .full-time:after {
-    top: 45px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  .calculator .list-group-content-item-form .full-time:after {
-    font-size: 9px;
+  .calculator .circular-progress-text {
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 30px;
   }
 }
