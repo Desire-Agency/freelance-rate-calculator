@@ -311,28 +311,48 @@ const riskFactors = [
 const EDcalculator = () => {
   const [age, setAge] = useState("");
   const [selectedFactors, setSelectedFactors] = useState({});
+  const [normalizedFactors, setNormalizedFactors] = useState({});
   const [showResult, setShowResult] = useState(false);
   const [errorAge, setErrorAge] = useState(false);
+  const [riskLevel, setRiskLevel] = useState("");
+  const [riskPercentage, setRiskPercentage] = useState(0);
 
-  const handleToggle = (name, weight) => setSelectedFactors((prev) => ({ ...prev, [name]: prev[name] ? 0 : weight, }))
+  const handleToggle = (name, weight) => {
+    const updatedFactors = { ...selectedFactors };
 
-  const normalizedFactors = Object.entries(selectedFactors).map(([key, weight]) => ({
-    name: key,
-    weight: weight ? (weight / 135) * 100 : 0,
-  }));
+    if (updatedFactors[name]) {
+      delete updatedFactors[name];
+    } else {
+      updatedFactors[name] = weight;
+    }
 
-  const riskPercentage = normalizedFactors.reduce((sum, factor) => sum + factor.weight, 0);
+    setSelectedFactors(updatedFactors);
 
-  let riskLevel = "";
-  if (riskPercentage <= 25) {
-    riskLevel = "Low Risk";
-  } else if (riskPercentage <= 50) {
-    riskLevel = "Moderate Risk";
-  } else if (riskPercentage <= 75) {
-    riskLevel = "High Risk";
-  } else {
-    riskLevel = "Very High Risk";
-  }
+    const normalizedFactorsConst = Object.entries(updatedFactors).map(([key, weight]) => ({
+      name: key,
+      weight: weight ? (weight / 135) * 100 : 0,
+    }));
+
+    setNormalizedFactors(normalizedFactorsConst);
+
+    const totalRiskPercentage = normalizedFactorsConst.reduce((sum, factor) => sum + factor.weight, 0);
+    setRiskPercentage(totalRiskPercentage);
+
+    switch (true) {
+      case totalRiskPercentage <= 25:
+        setRiskLevel("Low Risk");
+        break;
+      case totalRiskPercentage <= 50:
+        setRiskLevel("Moderate Risk");
+        break;
+      case totalRiskPercentage <= 75:
+        setRiskLevel("High Risk");
+        break;
+      default:
+        setRiskLevel("Very High Risk");
+        break;
+    }
+  };
 
   return (
     <div className="calculator">
