@@ -459,7 +459,7 @@ const EDcalculator = () => {
           </div>
         }
 
-        {!!showResult &&
+        {!!showResult && !!normalizedFactors?.length &&
           <div className="description-block">
             {normalizedFactors.map((factor) => (
               <div className="description-item" key={factor.name}>
