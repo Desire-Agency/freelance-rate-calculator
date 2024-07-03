@@ -311,7 +311,7 @@ const riskFactors = [
 const EDcalculator = () => {
   const [age, setAge] = useState("");
   const [selectedFactors, setSelectedFactors] = useState({});
-  const [normalizedFactors, setNormalizedFactors] = useState({});
+  const [normalizedFactors, setNormalizedFactors] = useState([]);
   const [showResult, setShowResult] = useState(false);
   const [errorAge, setErrorAge] = useState(false);
   const [riskLevel, setRiskLevel] = useState("");
@@ -351,6 +351,20 @@ const EDcalculator = () => {
       default:
         setRiskLevel("Very High Risk");
         break;
+    }
+  };
+
+  const handleAgeChange = (e) => {
+    const value = e.target.value;
+    if (/^[0-9]{0,3}$/.test(value) && value <= 120 && (value >= 0 || value === "")) {
+      let ageRisk = 0;
+      if (value >= 70) ageRisk = 40;
+      else if (value >= 60) ageRisk = 30;
+      else if (value >= 50) ageRisk = 20;
+      else if (value >= 40) ageRisk = 10;
+      else if (value >= 30) ageRisk = 5;
+      setRiskPercentage(prev => prev + ageRisk - (age >= 70 ? 40 : age >= 60 ? 30 : age >= 50 ? 20 : age >= 40 ? 10 : age >= 30 ? 5 : 0));
+      setAge(value);
     }
   };
 
@@ -402,12 +416,7 @@ const EDcalculator = () => {
             <input
               type="number"
               value={age}
-              onChange={(e) =>
-                /^[0-9]{0,3}$/.test(e.target.value) &&
-                e.target.value <= 120 &&
-                (e.target.value >= 0 || e.target.value === "") &&
-                setAge(e.target.value)
-              }
+              onChange={handleAgeChange}
               required
               className={errorAge ? "error" : ""}
             />
