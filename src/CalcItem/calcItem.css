@@ -1,3 +1,38 @@
+@font-face {
+  font-family: "Larsseit";
+  src: url("/public/fonts/Larsseit/Larsseit-Bold.otf");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Larsseit";
+  src: url("/public/fonts/Larsseit/Larsseit-Light.otf");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Larsseit";
+  src: url("/public/fonts/Larsseit/Larsseit-Thin.otf");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Larsseit";
+  src: url("/public/fonts/Larsseit/Larsseit-Medium.otf");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+* {
+  font-family: "Larsseit" !important;
+}
+
 .calculator input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -20,7 +55,7 @@ input::-webkit-inner-spin-button {
   margin: 100px auto;
   border-radius: 15px;
   overflow: hidden;
-  background: #f1f2f8;
+  background: #f7f7f7;
   line-height: 1.2;
 }
 
@@ -41,17 +76,33 @@ input::-webkit-inner-spin-button {
 }
 
 .calculator .table_wrap h2 {
-  font-size: 16px;
-  text-align: c;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 22px;
+  line-height: 22px;
+  color: #373373;
+}
+.total_block_item_wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  padding: 0 20px;
 }
 
 .calculator h1 {
   width: 100%;
-  padding: 20px;
-  background-color: rgb(213 215 230);
-  color: #12396c;
+  height: 100px;
+  display: flex;
+  color: #fff;
   font-size: 24px;
   text-align: center;
+  background: url(/public/images/Header.png);
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .calculator .content {
@@ -60,8 +111,8 @@ input::-webkit-inner-spin-button {
   align-items: center;
   flex-direction: column;
   width: 100%;
-  padding: 30px 20px;
-  gap: 24px;
+  padding: 40px;
+  gap: 40px;
 }
 
 .calculator .tagline {
@@ -72,7 +123,7 @@ input::-webkit-inner-spin-button {
 .calculator .row_wrap {
   width: 100%;
   display: grid;
-  gap: 18px;
+  gap: 54px;
   align-items: end;
 }
 
@@ -103,7 +154,7 @@ input::-webkit-inner-spin-button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   font-size: 14px;
 }
 
@@ -121,6 +172,8 @@ input::-webkit-inner-spin-button {
   display: flex;
   align-items: center;
   gap: 6px;
+  color: #8c8f9e;
+  height: 36px;
 }
 
 .calculator .total_block_item p.helper {
@@ -132,7 +185,30 @@ input::-webkit-inner-spin-button {
   font-size: 18px;
   font-weight: 800;
   text-align: center;
-  color: #0062e3;
+}
+
+.calculator .total_block_item.monthlyIncome span {
+  color: #ee454f;
+}
+
+.calculator .total_block_item.estimatedTaxation span {
+  color: #37a564;
+}
+
+.calculator .total_block_item.spending span {
+  color: #f8ab16;
+}
+
+.calculator .total_block_item.debt span {
+  color: #9b45ad;
+}
+
+.calculator .total_block_item.savings span {
+  color: #2681DB;
+}
+
+.calculator .total_block_item.monthlyRentBudget span {
+  color: #373373;
 }
 
 .calculator .total_inner {
@@ -169,7 +245,8 @@ input::-webkit-inner-spin-button {
 
 @media screen and (max-width: 768px) {
   .calculator .content {
-    gap: 18px;
+    gap: 20px;
+    padding: 20px;
   }
 
   .calculator .total_block_item br {
@@ -186,9 +263,29 @@ input::-webkit-inner-spin-button {
 
   .calculator .row_wrap.grid-2 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 20px;
   }
 
   .calculator .total_inner {
     padding: 20px 10px;
+  }
+
+  .total_block_item_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding: 0 20px;
+    flex-direction: column;
+  }
+
+  .calculator h1 {
+    height: 60px;
+    font-size: 20px;
+  }
+
+  .calculator .total_block_item p {
+    height: auto;
   }
 }

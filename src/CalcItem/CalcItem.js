@@ -15,7 +15,7 @@ import "./calcItem.css"
 export default function CalcItem() {
   const [formData, setFormData] = useState({
     preTaxHouseholdIncome: "",
-    payPeriod: 'Yearly',
+    payPeriod: undefined,
     monthlySpending: "",
     monthlyDebts: "",
   });
@@ -34,7 +34,7 @@ export default function CalcItem() {
   useEffect(() => {
     if (!!formData.preTaxHouseholdIncome && !!formData.monthlySpending) {
       const { preTaxHouseholdIncome, payPeriod, monthlySpending, monthlyDebts } = formData;
-      const monthlyIncome = payPeriod === "Yearly" ?
+      const monthlyIncome = payPeriod === "Monthly" ?
         Number(preTaxHouseholdIncome) / 12 : payPeriod === "Biweekly" ?
           Number(preTaxHouseholdIncome) * 2 : Number(preTaxHouseholdIncome);
       const estimatedTaxation = monthlyIncome * 0.25;
@@ -89,7 +89,6 @@ export default function CalcItem() {
                 value={formData.payPeriod}
                 label="Pay Period"
                 onChange={(e) => setFormData({ ...formData, payPeriod: e.target.value })} >
-                <MenuItem value="Yearly">Yearly</MenuItem>
                 <MenuItem value="Biweekly">Biweekly</MenuItem>
                 <MenuItem value="Monthly">Monthly</MenuItem>
                 <MenuItem value="Annually">Annually</MenuItem>
@@ -123,57 +122,68 @@ export default function CalcItem() {
 
           {!!formData.preTaxHouseholdIncome && !!formData.monthlySpending &&
             <div className="table_wrap">
-              <h2>Budgeting Breakdown</h2>
               <div className="row_inner total_block total_inner">
-                <div className="total_block_item">
-                  <p>Monthly Income</p>
-                  <span>${outputData.monthlyIncome}</span>
-                </div>
-                <div className="total_block_item">
-                  <p>Estimated Taxation
-                    <Tooltip
-                      title="This is an estimation. Your actual taxation may vary based on factors including filing status, location, and tax brackets."
-                      placement="top"
-                      fontSize="sm"
-                    >
-                      <InfoOutlinedIcon />
-                    </Tooltip>
-                  </p>
-                  <div>
-                    <span>${outputData.estimatedTaxation}</span>
-                    <span>{outputData.estimatedTaxationProc}%</span>
+                <h2>Budgeting Breakdown</h2>
+                <div class="total_block_item_wrap">
+                  <div className="total_block_item monthlyIncome">
+                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#EE454F" />
+                    </svg>
+                    <p>Monthly Income</p>
+                    <span>${outputData.monthlyIncome}</span>
                   </div>
-                </div>
-                <div className="total_block_item">
-                  <p>Spending</p>
-                  <div>
-                    <span>${outputData.spending}</span>
-                    <span>{outputData.spendingProc}%</span>
-                  </div>
-                </div>
-                {Number(outputData.debt) > 0 &&
-                  <div className="total_block_item">
-                    <p>Debt</p>
+                  <div className="total_block_item estimatedTaxation">
+                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#37A564" />
+                    </svg>
+                    <p>Estimated Taxation</p>
                     <div>
-                      <span>${outputData.debt}</span>
-                      <span>{outputData.debtProc}%</span>
+                      <span>${outputData.estimatedTaxation}</span>
+                      <span>{outputData.estimatedTaxationProc}%</span>
                     </div>
                   </div>
-                }
-                {Number(outputData.savings) > 0 &&
-                  <div className="total_block_item">
-                    <p>Savings</p>
+                  <div className="total_block_item spending">
+                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#f8ab16" />
+                    </svg>
+                    <p>Spending</p>
                     <div>
-                      <span>${outputData.savings}</span>
-                      <span>{outputData.savingsProc}%</span>
+                      <span>${outputData.spending}</span>
+                      <span>{outputData.spendingProc}%</span>
                     </div>
                   </div>
-                }
-                <div className="total_block_item">
-                  <p>Monthly Rent Budget</p>
-                  <div>
-                    <span>${outputData.monthlyRentBudget}</span>
-                    <span>{outputData.monthlyRentBudgetProc}%</span>
+                  {Number(outputData.debt) > 0 &&
+                    <div className="total_block_item debt">
+                      <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#9b45ad" />
+                      </svg>
+                      <p>Debt</p>
+                      <div>
+                        <span>${outputData.debt}</span>
+                        <span>{outputData.debtProc}%</span>
+                      </div>
+                    </div>}
+                  {Number(outputData.savings) > 0 &&
+
+                    <div className="total_block_item savings">
+                      <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#2681DB" />
+                      </svg>
+                      <p>Savings</p>
+                      <div>
+                        <span>${outputData.savings}</span>
+                        <span>{outputData.savingsProc}%</span>
+                      </div>
+                    </div>}
+                  <div className="total_block_item monthlyRentBudget">
+                    <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 12L0.0717975 -1.30507e-06L13.9282 -9.36995e-08L7 12Z" fill="#373373" />
+                    </svg>
+                    <p>Monthly Rent Budget</p>
+                    <div>
+                      <span>${outputData.monthlyRentBudget}</span>
+                      <span>{outputData.monthlyRentBudgetProc}%</span>
+                    </div>
                   </div>
                 </div>
               </div>
