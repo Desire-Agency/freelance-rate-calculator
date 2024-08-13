@@ -33,8 +33,9 @@ export default function CalcItem() {
     if (!!formData.preTaxHouseholdIncome && !!formData.monthlySpending) {
       const { preTaxHouseholdIncome, payPeriod, monthlySpending, monthlyDebts } = formData;
       const monthlyIncome = payPeriod === "Monthly" ?
-        Number(preTaxHouseholdIncome) / 12 : payPeriod === "Biweekly" ?
-          Number(preTaxHouseholdIncome) * 2 : Number(preTaxHouseholdIncome);
+        Number(preTaxHouseholdIncome) : payPeriod === "Biweekly" ?
+          Number(preTaxHouseholdIncome) * 2 / 12 : Number(preTaxHouseholdIncome) / 12;
+
       const estimatedTaxation = monthlyIncome * 0.25;
       const spending = Number(monthlySpending);
 
@@ -63,7 +64,6 @@ export default function CalcItem() {
   }, [formData]);
 
 
-  console.log(outputData)
   return (
     <LocalizationProvider dateAdapter={AdapterLuxon}>
       <div className="calculator">
