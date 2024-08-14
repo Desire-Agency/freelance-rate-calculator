@@ -34,7 +34,7 @@ export default function CalcItem() {
       const { preTaxHouseholdIncome, payPeriod, monthlySpending, monthlyDebts } = formData;
       const monthlyIncome = payPeriod === "Monthly" ?
         Number(preTaxHouseholdIncome) : payPeriod === "Biweekly" ?
-          Number(preTaxHouseholdIncome) * 2 / 12 : Number(preTaxHouseholdIncome) / 12;
+          Number(preTaxHouseholdIncome) * 2  : Number(preTaxHouseholdIncome) / 12;
 
       const estimatedTaxation = monthlyIncome * 0.25;
       const spending = Number(monthlySpending);
