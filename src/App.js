@@ -18,7 +18,6 @@ const FreelanceRateCalculator = () => {
     utilities: "",
     other: "",
     weeklyHours: "",
-    yearlyIncome: "",
   });
   const [errors, setErrors] = useState({});
 
@@ -38,17 +37,17 @@ const FreelanceRateCalculator = () => {
 
     if (step === 1) {
       if (!formData.rent || isNaN(formData.rent) || parseFloat(formData.rent) <= 0) {
-        stepErrors.rent = "Enter valid rent.";
+        stepErrors.rent = "Enter valid rent or home payment.";
       }
       if (!formData.utilities || isNaN(formData.utilities) || parseFloat(formData.utilities) <= 0) {
-        stepErrors.utilities = "Enter valid utilities.";
+        stepErrors.utilities = "Enter valid utilities expense.";
       }
       if (!formData.other || isNaN(formData.other) || parseFloat(formData.other) <= 0) {
-        stepErrors.other = "Enter valid expenses.";
+        stepErrors.other = "Enter valid other expenses (food, insurance, etc.).";
       }
     } else if (step === 2) {
       if (!formData.weeklyHours || isNaN(formData.weeklyHours) || parseFloat(formData.weeklyHours) <= 0) {
-        stepErrors.weeklyHours = "Enter valid hours.";
+        stepErrors.weeklyHours = "Enter valid weekly working hours.";
       }
     }
 
@@ -82,13 +81,13 @@ const FreelanceRateCalculator = () => {
         return (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Typography variant="h4" align="center" gutterBottom>
-              Rate Calculator
+              Freelance Rate Calculator
             </Typography>
             <Divider sx={{ marginBottom: 2 }} />
             <Typography variant="h6">Monthly Expenses</Typography>
             <TextField
               fullWidth
-              label="Rent"
+              label="Rent or Home Payments"
               name="rent"
               value={formData.rent}
               onChange={handleInputChange}
@@ -110,7 +109,7 @@ const FreelanceRateCalculator = () => {
             />
             <TextField
               fullWidth
-              label="Other"
+              label="Other (Food, Insurance, etc.)"
               name="other"
               value={formData.other}
               onChange={handleInputChange}
@@ -136,13 +135,13 @@ const FreelanceRateCalculator = () => {
         return (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <Typography variant="h4" align="center" gutterBottom>
-              Rate Calculator
+              Freelance Rate Calculator
             </Typography>
             <Divider sx={{ marginBottom: 2 }} />
-            <Typography variant="h6">Weekly Hours</Typography>
+            <Typography variant="h6">Weekly Working Hours</Typography>
             <TextField
               fullWidth
-              label="Hours per week"
+              label="Hours Per Week"
               name="weeklyHours"
               value={formData.weeklyHours}
               onChange={handleInputChange}
@@ -152,7 +151,7 @@ const FreelanceRateCalculator = () => {
               helperText={errors.weeklyHours}
             />
             <Typography marginTop={2}>
-              Total hours/year: {formatNumber(parseFloat(formData.weeklyHours || 0) * 52)}
+              Total Working Hours Per Year: {formatNumber(parseFloat(formData.weeklyHours || 0) * 52)}
             </Typography>
             <Box display="flex" justifyContent="space-between" marginTop={2}>
               <Button
@@ -183,48 +182,22 @@ const FreelanceRateCalculator = () => {
             </Typography>
             <Divider sx={{ marginBottom: 2 }} />
             <Typography variant="h5" align="center" gutterBottom>
-              Hourly Rate: ${formatNumber(results.hourlyRate)}
+              Your Estimated Minimum Hourly Rate: ${formatNumber(results.hourlyRate)}
             </Typography>
             <Stack spacing={2} sx={{ padding: 2, backgroundColor: "#f9f9f9", borderRadius: "8px" }}>
               <Box display="flex" justifyContent="space-between">
-                <Typography>Yearly Income (pre-tax):</Typography>
+                <Typography>Estimated Yearly Income (Pre-Tax):</Typography>
                 <Typography>${formatNumber(results.yearlyIncome)}</Typography>
               </Box>
               <Box display="flex" justifyContent="space-between">
-                <Typography>Taxes (25%):</Typography>
+                <Typography>Tax Allocation (25%):</Typography>
                 <Typography>${formatNumber(results.taxAllocation)}</Typography>
               </Box>
               <Box display="flex" justifyContent="space-between">
-                <Typography>Yearly Income (post-tax):</Typography>
+                <Typography>Estimated Yearly Income (Post-Tax):</Typography>
                 <Typography>${formatNumber(results.postTaxIncome)}</Typography>
               </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Total Hours/Year:</Typography>
-                <Typography>{formatNumber(results.totalWorkingHours)}</Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between">
-                <Typography>Billable Hours:</Typography>
-                <Typography>{formatNumber(results.billableHours)}</Typography>
-              </Box>
             </Stack>
-            <Box display="flex" justifyContent="center" marginTop={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setFormData({
-                    rent: "",
-                    utilities: "",
-                    other: "",
-                    weeklyHours: "",
-                    yearlyIncome: "",
-                  });
-                  setStep(1);
-                }}
-              >
-                Start Over
-              </Button>
-            </Box>
           </motion.div>
         );
       default:
