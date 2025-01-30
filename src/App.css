@@ -5,6 +5,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: "red";
 }
 
 @media (prefers-reduced-motion: no-preference) {
