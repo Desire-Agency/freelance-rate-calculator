@@ -257,7 +257,7 @@ const FreelanceRateCalculator = () => {
                 <Typography
                   variant="p"
                   style={{ marginBottom: "12px", fontSize: matches ? "16px" : "14px", color: "#222222", fontWeight: 500, }}
-                >Total Working Hours/Year</Typography>
+                >Total working hours every year</Typography>
                 <input
                   style={{
                     backgroundColor: "#eee",
@@ -269,7 +269,7 @@ const FreelanceRateCalculator = () => {
                     border: "1px solid #D5E0D5"
                   }}
                   placeholder="hours/year"
-                  label="Total Working Hours/Year"
+                  label="Total working hours every year"
                   name="utilities"
                   value={formData.workEveryWeek ? `${formatNumber((parseFloat(formData.workEveryWeek || 0)) * 52)}` : ""}
                   disabled
